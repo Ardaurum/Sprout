@@ -1,9 +1,3 @@
-[submodule "Sprout/vendor/external/crosswindow"]
-	path = Sprout/vendor/external/crosswindow
-	url = https://github.com/alaingalvan/crosswindow.git
-[submodule "Sprout/vendor/crosswindow"]
-	path = Sprout/vendor/crosswindow
-	url = https://github.com/ardaurum/crosswindow.git
 [submodule "Sprout/vendor/glfw"]
 	path = Sprout/vendor/glfw
 	url = https://github.com/Ardaurum/glfw.git
@@ -13,3 +7,6 @@
 [submodule "Sprout/vendor/glm"]
 	path = Sprout/vendor/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Sprout/vendor/spdlog"]
+	path = Sprout/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
