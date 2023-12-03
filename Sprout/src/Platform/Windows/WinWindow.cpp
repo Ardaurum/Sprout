@@ -8,8 +8,6 @@
 #include "Sprout/Renderer/RendererContext.h"
 #include "Sprout/Renderer/RendererAPI.h"
 
-#include <GLFW/glfw3.h>
-
 namespace Sprout
 {
 	std::shared_ptr<Window> Window::Create(const WindowProperties& Properties)
@@ -28,7 +26,7 @@ namespace Sprout
 	{
 		SPROUT_CORE_INFO("Creating window \"{0}\": {1}, {2}", properties.Title, properties.Width, properties.Height);
 
-		WinData.Title = properties.Title;
+		WinData.Title = properties.Title + ": " + RendererAPI::CurrentAPI;
 		WinData.Height = properties.Height;
 		WinData.Width = properties.Width;
 

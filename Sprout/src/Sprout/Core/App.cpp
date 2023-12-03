@@ -18,7 +18,7 @@ namespace Sprout {
 		SPROUT_CORE_ASSERT(!Instance, "App already exists!");
 		Instance = this;
 
-		Renderer::PrepareAPI(RendererAPI::API::DirectX11);
+		Renderer::PrepareAPI(RendererAPI::API::OpenGL);
 
 		AppWindow = Window::Create();
 		AppWindow->SetCallbackFn([this](Event& ev) { OnEvent(ev); });

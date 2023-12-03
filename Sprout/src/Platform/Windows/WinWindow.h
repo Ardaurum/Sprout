@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Sprout/Core/Window.h"
+#include <SDL3/SDL.h>
 
-struct GLFWwindow;
+struct SDL_Window;
 
 namespace Sprout
 {
@@ -29,7 +30,7 @@ namespace Sprout
 		void SetupKeyEvents();
 		void Shutdown();
 
-		GLFWwindow* Window;
+		SDL_Window* Window;
 		std::shared_ptr<class RendererContext> Context;
 
 		struct Data

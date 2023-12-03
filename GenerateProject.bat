@@ -1,2 +1,2 @@
-call vendor\premake\premake5.exe vs2022
+call cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=OFF .
 PAUSE

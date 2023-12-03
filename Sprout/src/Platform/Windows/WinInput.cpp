@@ -2,7 +2,6 @@
 #include "Sprout/Input/Input.h"
 
 #include "Sprout/Core/App.h"
-#include <GLFW/glfw3.h>
 
 namespace Sprout
 {

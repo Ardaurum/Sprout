@@ -100,12 +100,12 @@ public:
 		)";
 
 		//GLSL Shaders
-		//ShaderLibrary.LoadFromSrc("PulseShader", glslShaderSrc);
-		//ShaderLibrary.LoadFromPath("assets/shaders/Texture.glsl");
+		ShaderLibrary.LoadFromSrc("PulseShader", glslShaderSrc);
+		ShaderLibrary.LoadFromPath("assets/shaders/Texture.glsl");
 
 		//HLSL Shaders
-		ShaderLibrary.LoadFromSrc("PulseShader", hlslShaderSrc);
-		ShaderLibrary.LoadFromPath("assets/shaders/Texture.hlsl");
+		//ShaderLibrary.LoadFromSrc("PulseShader", hlslShaderSrc);
+		//ShaderLibrary.LoadFromPath("assets/shaders/Texture.hlsl");
 
 		Texture = Sprout::Texture2D::Create("assets/textures/Checkerboard.png");
 		PoppyTexture = Sprout::Texture2D::Create("assets/textures/Poppy.png");
