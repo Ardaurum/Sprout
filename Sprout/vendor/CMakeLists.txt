@@ -1,4 +1,4 @@
-add_subdirectory(sdl)
+add_subdirectory(sdl EXCLUDE_FROM_ALL)
 add_subdirectory(spdlog)
 add_subdirectory(glm)
 

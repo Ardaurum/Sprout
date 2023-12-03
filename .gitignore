@@ -361,3 +361,12 @@ bin-int
 **/*.cbp
 **/CMakeScripts
 **/compile_commands.json
+
+# Additional
+*.dll
+*.exe
+*.exp
+*.lib
+*.vcproj.*.user
+[Dd]ebug
+[Rr]elease
