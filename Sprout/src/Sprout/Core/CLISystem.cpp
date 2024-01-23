@@ -78,7 +78,7 @@ namespace Sprout
                 Values[option] = argv[index];
                 break;
             default:
-                SPROUT_CORE_ERROR("Not supported CLI type: {0}", definition.OptionType);
+                SPROUT_CORE_ERROR("Not supported CLI type: {0}", TypeToString(definition.OptionType));
                 break;
             }
             ++index;
