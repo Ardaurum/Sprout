@@ -382,5 +382,4 @@ Intermediates/
 **.vcxproj.user
 **.csproj
 
-
-Sprout/vendor/
+Sprout/vendor/sdl3-build
