@@ -60,7 +60,7 @@ namespace Sprout
 			Microsoft::WRL::ComPtr<ID3D11InputLayout> layout;
 			HRESULT result = DX11Context::Get().GetDevice()->CreateInputLayout(
 				&layoutDesc[0], 
-				layoutDesc.size(), 
+				static_cast<uint32_t>(layoutDesc.size()), 
 				shaderData[i].VSData->GetBufferPointer(), 
 				shaderData[i].VSData->GetBufferSize(), 
 				layout.GetAddressOf()

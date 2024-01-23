@@ -14,7 +14,7 @@ namespace Sprout
 		virtual void Unbind() const = 0;
 
 		virtual void SetLayout(const LayoutDataType layoutType) = 0;
-		virtual const std::shared_ptr<InputLayout>& GetLayout() const = 0;
+		virtual const std::shared_ptr<InputLayout> GetLayout() const = 0;
 
 		static std::shared_ptr<VertexBuffer> Create(float* vertices, uint32_t size);
 	};

@@ -23,7 +23,7 @@ namespace Sprout
 			Layout = std::make_shared<DX11InputLayout>(LayoutDesc(layoutType)); 
 		}
 
-		virtual const std::shared_ptr<InputLayout>& GetLayout() const override { return Layout; }
+		virtual const std::shared_ptr<InputLayout> GetLayout() const override { return Layout; }
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> BufferHandle;

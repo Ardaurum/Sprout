@@ -15,7 +15,7 @@ namespace Sprout
 	bool Input::IsMouseButtonPressed(MouseCode btn)
 	{
 		uint32_t mouseState = SDL_GetMouseState(nullptr, nullptr);
-		return (mouseState & (1 << static_cast<uint32_t>(btn) - 1)) != 0;
+		return (mouseState & (1 << (static_cast<uint32_t>(btn) - 1))) != 0;
 	}
 
 	glm::vec2 Input::GetMousePos()

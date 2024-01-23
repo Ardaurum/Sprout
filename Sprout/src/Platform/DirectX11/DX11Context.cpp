@@ -78,7 +78,7 @@ namespace Sprout
 		SPROUT_CORE_INFO("Vendor: {0}", dxgiAdapterDesc.VendorId);
 		SPROUT_CORE_INFO("Version: {0}", featureLevel);
 		char description[128];
-		sprintf(description, "%ws", dxgiAdapterDesc.Description);
+		sprintf_s(description, "%ws", dxgiAdapterDesc.Description);
 		SPROUT_CORE_INFO("Renderer: {0}", description);
 
 		OnResize();

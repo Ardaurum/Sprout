@@ -98,7 +98,7 @@ namespace Sprout
 		vReflection->GetDesc(&vDesc);
 		LayoutType = LayoutDataType::None;
 
-		for (size_t i = 0; i < vDesc.InputParameters; i++)
+		for (uint32_t i = 0; i < vDesc.InputParameters; i++)
 		{
 			D3D11_SIGNATURE_PARAMETER_DESC paramDesc;
 			vReflection->GetInputParameterDesc(i, &paramDesc);
