@@ -1,6 +1,3 @@
-[submodule "Sprout/vendor/glm"]
-	path = Sprout/vendor/glm
-	url = https://github.com/g-truc/glm.git
 [submodule "Sprout/vendor/spdlog"]
 	path = Sprout/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
