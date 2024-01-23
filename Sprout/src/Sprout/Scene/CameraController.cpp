@@ -27,7 +27,7 @@ namespace Sprout
 	{
 		float dt = ts;
 
-		if (Input::IsMouseButtonPressed(Sprout::MouseCode::Button1))
+		if (Input::IsMouseButtonPressed(Sprout::MouseCode::ButtonRight))
 		{
 			glm::vec2 newMousePos = Input::GetMousePos();
 			glm::vec2 deltaMouse = newMousePos - LastMousePos;

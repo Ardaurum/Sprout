@@ -4,7 +4,6 @@
 
 #include "Sprout/FileSystem/FileUtils.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
 #include "Platform/DirectX11/DX11Shader.h"
 
 namespace Sprout
@@ -14,15 +13,13 @@ namespace Sprout
 		switch(Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:
-			SPROUT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			SPROUT_CORE_FATAL("RendererAPI::None is not supported!");
 			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(name, FileUtils::ReadFile(path));
-		case RendererAPI::API::DirectX11:
+		case RendererAPI::API::Direct3D11:
 			return std::make_shared<DX11Shader>(name, FileUtils::ReadFile(path));
 		}
 
-		SPROUT_CORE_ASSERT(false, "Unknown Renderer API!");
+		SPROUT_CORE_FATAL("Unknown Renderer API!");
 		return nullptr;
 	}
 
@@ -39,22 +36,20 @@ namespace Sprout
 		switch(Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:
-			SPROUT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			SPROUT_CORE_FATAL("RendererAPI::None is not supported!");
 			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(name, src);
-		case RendererAPI::API::DirectX11:
+		case RendererAPI::API::Direct3D11:
 			return std::make_shared<DX11Shader>(name, src);
 		}
 
-		SPROUT_CORE_ASSERT(false, "Unknown Renderer API!");
+		SPROUT_CORE_FATAL("Unknown Renderer API!");
 		return nullptr;
 	}
 	
 	void ShaderLibrary::Add(const std::shared_ptr<Shader>& shader)
 	{
 		const std::string& name = shader->GetName();
-		SPROUT_CORE_ASSERT(Shaders.find(name) == Shaders.end(), "Shader already exists!");
+		SPROUT_CORE_ASSERT_MSG(Shaders.find(name) == Shaders.end(), "Shader already exists!");
 		Shaders[name] = shader;
 	}
 
@@ -81,7 +76,7 @@ namespace Sprout
 
 	std::shared_ptr<Shader> ShaderLibrary::Get(const std::string& name)
 	{
-		SPROUT_CORE_ASSERT(Shaders.find(name) != Shaders.end(), "Shader not found!");
+		SPROUT_CORE_ASSERT_MSG(Shaders.find(name) != Shaders.end(), "Shader not found!");
 		return Shaders[name];
 	}
 }

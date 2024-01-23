@@ -2,8 +2,6 @@
 
 #include "Sprout/ImGui/ImGuiBackend.h"
 
-#include <GLFW/glfw3.h>
-
 namespace Sprout
 {
 	class DX11ImGuiBackend : public ImGuiBackend

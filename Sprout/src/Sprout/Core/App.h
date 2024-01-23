@@ -18,7 +18,7 @@ namespace Sprout
 	class App
 	{
 	public:
-		App();
+		App(std::string const& name);
 		virtual ~App();
 
 		void Run();
@@ -33,7 +33,7 @@ namespace Sprout
 		ImGuiLayer* GetImGuiLayer() { return GuiLayer; }
 
 	private:
-		void OnEvent(Event &ev);
+		void OnEvent(Event& ev);
 
 		bool OnWindowClose(WinCloseEvent& ev);
 		bool OnWindowResize(WinResizeEvent& ev);
@@ -52,5 +52,8 @@ namespace Sprout
 		static App* Instance;
 	};
 
+	void DefineCLIArgs();
+
+	void DefineGameCLIArgs();
 	App* CreateApp();
 }

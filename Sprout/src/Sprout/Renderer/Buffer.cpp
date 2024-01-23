@@ -2,7 +2,6 @@
 #include "Buffer.h"
 #include "Renderer.h"
 
-#include "Platform/OpenGL/OpenGLBuffer.h"
 #include "Platform/DirectX11/DX11Buffer.h"
 
 namespace Sprout
@@ -12,15 +11,13 @@ namespace Sprout
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:
-			SPROUT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			SPROUT_CORE_FATAL("RendererAPI::None is not supported!");
 			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLVertexBuffer>(vertices, size);
-		case RendererAPI::API::DirectX11:
+		case RendererAPI::API::Direct3D11:
 			return std::make_shared<DX11VertexBuffer>(vertices, size);
 		}
 
-		SPROUT_CORE_ASSERT(false, "Unknown Renderer API!");
+		SPROUT_CORE_FATAL("Unknown Renderer API!");
 		return nullptr;
 	}
 	
@@ -29,15 +26,13 @@ namespace Sprout
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:
-			SPROUT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			SPROUT_CORE_FATAL("RendererAPI::None is not supported!");
 			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLIndexBuffer>(indices, count);
-		case RendererAPI::API::DirectX11:
+		case RendererAPI::API::Direct3D11:
 			return std::make_shared<DX11IndexBuffer>(indices, count);
 		}
 
-		SPROUT_CORE_ASSERT(false, "Unknown Renderer API!");
+		SPROUT_CORE_FATAL("Unknown Renderer API!");
 		return nullptr;
 	}
 }

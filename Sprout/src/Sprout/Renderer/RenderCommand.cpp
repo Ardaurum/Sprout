@@ -1,7 +1,6 @@
 #include "spch.h"
 #include "RenderCommand.h"
 
-#include "Platform/OpenGL/OpenGLRendererAPI.h"
 #include "Platform/DirectX11/DX11RendererAPI.h"
 #include "Platform/FakeRenderer/FakeRendererAPI.h"
 
@@ -14,16 +13,13 @@ namespace Sprout
 		switch(RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None:
-			SPROUT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			SPROUT_CORE_FATAL("RendererAPI::None is not supported!");
 			break;
-		case RendererAPI::API::OpenGL:
-			API = std::make_unique<OpenGLRendererAPI>();
-			break;
-		case RendererAPI::API::DirectX11:
+		case RendererAPI::API::Direct3D11:
 			API = std::make_unique<DX11RendererAPI>();
 			break;
 		default:
-			SPROUT_CORE_ASSERT(false, "Unknown Renderer API!");
+			SPROUT_CORE_FATAL("Unknown Renderer API!");
 			break;
 		}
 	}

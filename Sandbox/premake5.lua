@@ -28,20 +28,35 @@ project "Sandbox"
 		"Sprout"
 	}
 
+	copysrcDbg = path.join("%{wks.location}", "%{sdldir}", "Debug", "SDL3.dll")
+	copysrcRel = path.join("%{wks.location}", "%{sdldir}", "Release", "SDL3.dll")
+
 	filter "configurations:Debug"
 		defines { "SPROUT_DEBUG" }
 		runtime "Debug"
 		symbols "On"
+		postbuildcommands
+		{
+			"{COPYFILE} %{copysrcDbg} %{cfg.targetdir}"
+		}
 
 	filter "configurations:Release"
 		defines { "SPROUT_RELEASE" }
 		runtime "Release"
 		optimize "On"
+		postbuildcommands
+		{
+			"{COPYFILE} %{copysrcRel} %{cfg.targetdir}"
+		}
 
 	filter "configurations:Dist"
 		defines { "SPROUT_DIST" }
 		runtime "Release"
 		optimize "On"
+		postbuildcommands
+		{
+			"{COPYFILE} %{copysrcRel} %{cfg.targetdir}"
+		}
 
 	filter "system:windows"
 		systemversion "latest"

@@ -12,10 +12,9 @@ namespace Sprout
 		enum class API
 		{
 			None = 0,
-			OpenGL = 1,
-			DirectX11 = 2,
-			DirectX12 = 3,
-			Vulkan = 4
+			Direct3D11 = 1,
+			Direct3D12 = 2,
+			Vulkan = 3
 		};
 	
 	public:
@@ -29,6 +28,18 @@ namespace Sprout
 		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vArray) = 0;
 
 		inline static API GetAPI() { return CurrentAPI; }
+
+		inline static const char* ToString(API api)
+		{
+			switch (api)
+			{
+			case API::None: return "None";
+			case API::Direct3D11: return "Direct3D11";
+			case API::Direct3D12: return "Direct3D12";
+			case API::Vulkan: return "Vulkan";
+			default: return "[Unknown API]";
+			}
+		}
 		
 	private:
 		static API CurrentAPI;

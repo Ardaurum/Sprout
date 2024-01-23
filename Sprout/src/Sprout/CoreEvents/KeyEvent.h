@@ -14,7 +14,7 @@ namespace Sprout
 		EVENT_CATEGORY_TYPE(EventCategory::Input | EventCategory::Keyboard)
 
 	protected:
-		KeyEvent(const KeyCode key) : Key(key) {}
+		KeyEvent(void* nativeEvent, const KeyCode key) : Event(nativeEvent), Key(key) {}
 
 		KeyCode Key;
 	};
@@ -25,7 +25,7 @@ namespace Sprout
 		KeyMod GetKeyMod() { return Mod; }
 
 	protected:
-		KeyModEvent(const KeyCode key, const KeyMod mod) : KeyEvent(key), Mod(mod) {}
+		KeyModEvent(void* nativeEvent, const KeyCode key, const KeyMod mod) : KeyEvent(nativeEvent, key), Mod(mod) {}
 
 		KeyMod Mod;
 	};
@@ -33,7 +33,7 @@ namespace Sprout
 	class KeyDownEvent : public KeyModEvent
 	{
 	public:
-		KeyDownEvent(const KeyCode key, const KeyMod mod) : KeyModEvent(key, mod) {};
+		KeyDownEvent(void* nativeEvent, const KeyCode key, const KeyMod mod) : KeyModEvent(nativeEvent, key, mod) {};
 
 		EVENT_CLASS_TYPE(KeyDown)
 
@@ -48,7 +48,7 @@ namespace Sprout
 	class KeyRepeatEvent : public KeyModEvent
 	{
 	public:
-		KeyRepeatEvent(const KeyCode key, const KeyMod mod) : KeyModEvent(key, mod) {};
+		KeyRepeatEvent(void* nativeEvent, const KeyCode key, const KeyMod mod) : KeyModEvent(nativeEvent, key, mod) {};
 
 		EVENT_CLASS_TYPE(KeyRepeat)
 
@@ -63,7 +63,7 @@ namespace Sprout
 	class KeyUpEvent : public KeyModEvent
 	{
 	public:
-		KeyUpEvent(const KeyCode key, const KeyMod mod) : KeyModEvent(key, mod) {};
+		KeyUpEvent(void* nativeEvent, const KeyCode key, const KeyMod mod) : KeyModEvent(nativeEvent, key, mod) {};
 
 		EVENT_CLASS_TYPE(KeyUp)
 
@@ -78,7 +78,7 @@ namespace Sprout
 	class KeyTypeEvent : public KeyEvent
 	{
 	public:
-		KeyTypeEvent(const KeyCode key) : KeyEvent(key) {};
+		KeyTypeEvent(void* nativeEvent, const KeyCode key) : KeyEvent(nativeEvent, key) {};
 
 		EVENT_CLASS_TYPE(KeyType)
 

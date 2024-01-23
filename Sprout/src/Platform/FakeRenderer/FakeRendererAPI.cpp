@@ -7,21 +7,21 @@ namespace Sprout
 
 	void FakeRendererAPI::Init()
 	{
-		SPROUT_CORE_ASSERT(false, ErrorMsg);
+		SPROUT_CORE_FATAL(ErrorMsg);
 	}
 
 	void FakeRendererAPI::SetClearColor(const glm::vec4& color)
 	{
-		SPROUT_CORE_ASSERT(false, ErrorMsg);
+		SPROUT_CORE_FATAL(ErrorMsg);
 	}
 
 	void FakeRendererAPI::Clear()
 	{
-		SPROUT_CORE_ASSERT(false, ErrorMsg);
+		SPROUT_CORE_FATAL(ErrorMsg);
 	}
 
 	void FakeRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vArray)
 	{
-		SPROUT_CORE_ASSERT(false, ErrorMsg);
+		SPROUT_CORE_FATAL(ErrorMsg);
 	}
 }

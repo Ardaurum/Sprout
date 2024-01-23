@@ -24,14 +24,14 @@ namespace Sprout
 		Slot = binding;
 
 		HRESULT result = DX11Context::Get().GetDevice()->CreateBuffer(&cBufferDesc, nullptr, BufferHandle.GetAddressOf());
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Failed to create a constant buffer!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create a constant buffer!");
 	}
 
 	void DX11ConstantBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
 	{
 		D3D11_MAPPED_SUBRESOURCE resource;
 		HRESULT result = DX11Context::Get().GetDeviceContext()->Map(BufferHandle.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Failed to map constant buffer resource!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to map constant buffer resource!");
 
 		memcpy((char*) resource.pData + offset, data, size);
 		DX11Context::Get().GetDeviceContext()->Unmap(BufferHandle.Get(), 0);

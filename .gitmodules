@@ -4,9 +4,12 @@
 [submodule "Sprout/vendor/spdlog"]
 	path = Sprout/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "Sprout/vendor/sdl"]
-	path = Sprout/vendor/sdl
-	url = https://github.com/libsdl-org/SDL.git
+[submodule "Sprout/vendor/sdl3"]
+	path = Sprout/vendor/sdl3
+	url = https://github.com/Ardaurum/SDL3
 [submodule "Sprout/vendor/imgui"]
 	path = Sprout/vendor/imgui
-	url = https://github.com/ocornut/imgui
+	url = https://github.com/Ardaurum/imgui.git
+[submodule "Sprout/vendor/entt"]
+	path = Sprout/vendor/entt
+	url = https://github.com/skypjack/entt.git

@@ -14,7 +14,7 @@ namespace Sprout
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(0);
 		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 4);
-		SPROUT_CORE_ASSERT(data, "Failed to load an image!");
+		SPROUT_CORE_ASSERT_MSG(data, "Failed to load an image!");
 
 		Width = width;
 		Height = height;
@@ -39,12 +39,12 @@ namespace Sprout
 		resViewDesc.Texture2D.MostDetailedMip = 0;
 
 		HRESULT result = DX11Context::Get().GetDevice()->CreateTexture2D(&desc, nullptr, TextureHandle.GetAddressOf());
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Failed to create a 2D texture!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create a 2D texture!");
 
 		DX11Context::Get().GetDeviceContext()->UpdateSubresource(TextureHandle.Get(), 0, nullptr, data, (width * 4), 0);
 
 		result = DX11Context::Get().GetDevice()->CreateShaderResourceView(TextureHandle.Get(), &resViewDesc, ResourceHandle.GetAddressOf());
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Failed to create a resource view for texture!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create a resource view for texture!");
 
 		stbi_image_free(data);
 	}

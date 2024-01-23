@@ -1,41 +1,55 @@
 #include "spch.h"
-#include "DX11Context.h"
+#include "DX12Context.h"
 #include "Sprout/Core/Window.h"
+#include "Sprout/Core/CLISystem.h"
 
 #include <dxgi.h>
+#include <dxgi1_3.h>
 
 namespace Sprout
 {
-	DX11Context* DX11Context::Instance;
+	DX12Context* DX12Context::Instance;
 
-	DX11Context::DX11Context(Window* windowHandle)
+	DX12Context::DX12Context(Window* windowHandle)
 		: WindowHandle(windowHandle)
 	{
 		SPROUT_CORE_ASSERT_MSG(!Instance, "DX11 Context already exists!");
 		Instance = this;
 	}
 
-	void DX11Context::Init()
+	void DX12Context::Init()
 	{
-		UINT createDeviceFlags = 0;
+		/*UINT createDeviceFlags = 0;
+		HRESULT result;
 
 	#ifdef SPROUT_DEBUG
-		createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+		result = D3D12GetDebugInterface(IID_PPV_ARGS(&DebugInterface));
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create D3D12 Debug Interface!");
+		DebugInterface->EnableDebugLayer();
 	#endif
+
+		Microsoft::WRL::ComPtr<IDXGIFactory> dxgiFactory = 0;
+		UINT createFactoryFlags = 0;
+	#ifdef SPROUT_DEBUG
+		createFactoryFlags = DXGI_CREATE_FACTORY_DEBUG;
+	#endif
+		result = CreateDXGIFactory2(createFactoryFlags, IID_PPV_ARGS(&dxgiFactory));
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create DXGI Factory!");
+
 		D3D_FEATURE_LEVEL featureLevel;
-		HRESULT result = D3D11CreateDevice(
+		result = D3D12CreateDevice(
 			NULL, 
 			D3D_DRIVER_TYPE_HARDWARE, 
 			NULL, 
 			createDeviceFlags, 
 			NULL, 
 			NULL, 
-			D3D11_SDK_VERSION, 
+			D3D12_SDK_VERSION, 
 			&Device, 
 			&featureLevel, 
 			&Context);
 
-		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create D3D11 Device!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create D3D12 Device!");
 
 		int width, height;
 		width = WindowHandle->GetWidth();
@@ -67,7 +81,6 @@ namespace Sprout
 		DXGI_ADAPTER_DESC dxgiAdapterDesc;
 		dxgiAdapter->GetDesc(&dxgiAdapterDesc);
 
-		Microsoft::WRL::ComPtr<IDXGIFactory> dxgiFactory = 0;
 		result = dxgiAdapter->GetParent(__uuidof(IDXGIFactory),(void**) &dxgiFactory);
 		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to get dxgiFactory!");
 
@@ -81,12 +94,12 @@ namespace Sprout
 		sprintf(description, "%ws", dxgiAdapterDesc.Description);
 		SPROUT_CORE_INFO("Renderer: {0}", description);
 
-		OnResize();
+		OnResize();*/
 	}
 
-	void DX11Context::OnResize()
+	void DX12Context::OnResize()
 	{
-		SPROUT_CORE_ASSERT_MSG(Device && Context && SwapChain, "Initialize context first!");
+		/*SPROUT_CORE_ASSERT_MSG(Device && Context && SwapChain, "Initialize context first!");
 
 		int width, height;
 		width = WindowHandle->GetWidth();
@@ -95,14 +108,14 @@ namespace Sprout
 		HRESULT result = SwapChain->ResizeBuffers(2, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
 		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to resize swap chain buffers!");
 
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer = 0;
-		result = SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**) &backBuffer);
+		Microsoft::WRL::ComPtr<ID3D12Texture2D> backBuffer = 0;
+		result = SwapChain->GetBuffer(0, __uuidof(ID3D12Texture2D), (void**) &backBuffer);
 		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to get buffer from swap chain!");
 
 		result = Device->CreateRenderTargetView(backBuffer.Get(), 0, &RenderTarget);
 		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create Render Target View!");
 
-		D3D11_TEXTURE2D_DESC depthStencilDesc;
+		D3D12_TEXTURE2D_DESC depthStencilDesc;
 
 		depthStencilDesc.Width = width;
 		depthStencilDesc.Height = height;
@@ -112,8 +125,8 @@ namespace Sprout
 		depthStencilDesc.SampleDesc.Count = 1;
 		depthStencilDesc.SampleDesc.Quality = 0;
 
-		depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-		depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		depthStencilDesc.Usage = D3D12_USAGE_DEFAULT;
+		depthStencilDesc.BindFlags = D3D12_BIND_DEPTH_STENCIL;
 		depthStencilDesc.CPUAccessFlags = 0;
 		depthStencilDesc.MiscFlags = 0;
 
@@ -125,7 +138,7 @@ namespace Sprout
 
 		Context->OMSetRenderTargets(1, RenderTarget.GetAddressOf(), nullptr);
 
-		D3D11_VIEWPORT viewport;
+		D3D12_VIEWPORT viewport;
 		viewport.TopLeftX = 0;
 		viewport.TopLeftY = 0;
 		viewport.Width = static_cast<float>(width);
@@ -133,12 +146,12 @@ namespace Sprout
 		viewport.MinDepth = .0f;
 		viewport.MaxDepth = 1.0f;
 
-		Context->RSSetViewports(1, &viewport);
+		Context->RSSetViewports(1, &viewport);*/
 	}
 
-	void DX11Context::SwapBuffers()
+	void DX12Context::SwapBuffers()
 	{
-		SwapChain->Present(1, 0);
-		Context->OMSetRenderTargets(1, RenderTarget.GetAddressOf(), nullptr);
+		//SwapChain->Present(1, 0);
+		//Context->OMSetRenderTargets(1, RenderTarget.GetAddressOf(), nullptr);
 	}
 }

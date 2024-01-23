@@ -32,6 +32,7 @@ namespace Sprout
 	class Event
 	{
 	public:
+		Event(void* nativeEv) : NativeEvent(nativeEv) {}
 		virtual ~Event() = default;
 
 		virtual EventCategory GetCategoryFlags() const = 0;
@@ -46,8 +47,10 @@ namespace Sprout
 
 		bool IsHandled() const { return Handled; }
 		void SetHandled() noexcept { Handled = true; };
+		void* GetNativeEvent() const { return NativeEvent; }
 
 	private:
+		void* NativeEvent = nullptr;
 		bool Handled = false;
 	};
 

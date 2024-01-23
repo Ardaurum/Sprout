@@ -4,8 +4,6 @@
 #include "DX11Context.h"
 #include "DX11Buffer.h"
 
-#include "Sprout/Core/App.h"
-
 namespace Sprout
 {
 	void DX11RendererAPI::Init()

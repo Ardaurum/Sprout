@@ -8,7 +8,7 @@ namespace Sprout
 	class MouseBtnDownEvent : public Event
 	{
 	public:
-		MouseBtnDownEvent(MouseCode btnCode) : BtnCode(btnCode) {}
+		MouseBtnDownEvent(void* nativeEvent, MouseCode btnCode) : Event(nativeEvent), BtnCode(btnCode) {}
 
 		EVENT_CATEGORY_TYPE(EventCategory::Input | EventCategory::Mouse)
 		EVENT_CLASS_TYPE(MouseBtnDown)
@@ -29,7 +29,7 @@ namespace Sprout
 	class MouseBtnUpEvent : public Event
 	{
 	public:
-		MouseBtnUpEvent(MouseCode btnCode) : BtnCode(btnCode) {}
+		MouseBtnUpEvent(void* nativeEvent, MouseCode btnCode) : Event(nativeEvent), BtnCode(btnCode) {}
 
 		EVENT_CATEGORY_TYPE(EventCategory::Input | EventCategory::Mouse)
 		EVENT_CLASS_TYPE(MouseBtnUp)
@@ -50,7 +50,7 @@ namespace Sprout
 	class MouseMoveEvent : public Event
 	{
 	public:
-		MouseMoveEvent(float x, float y) : X(x), Y(y) {}
+		MouseMoveEvent(void* nativeEvent, float x, float y) : Event(nativeEvent), X(x), Y(y) {}
 
 		EVENT_CATEGORY_TYPE(EventCategory::Input | EventCategory::Mouse)
 		EVENT_CLASS_TYPE(MouseMove)
@@ -72,7 +72,7 @@ namespace Sprout
 	class MouseScrollEvent : public Event
 	{
 	public:
-		MouseScrollEvent(float scrollX, float scrollY) : ScrollX(scrollX), ScrollY(scrollY) {}
+		MouseScrollEvent(void* nativeEvent, float scrollX, float scrollY) : Event(nativeEvent), ScrollX(scrollX), ScrollY(scrollY) {}
 
 		EVENT_CATEGORY_TYPE(EventCategory::Input | EventCategory::Mouse)
 		EVENT_CLASS_TYPE(MouseScroll)

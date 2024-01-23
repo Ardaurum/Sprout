@@ -22,6 +22,7 @@ namespace Sprout
 
 		virtual ~Window() = default;
 
+		virtual void InitContext() = 0;
 		virtual void Update() = 0;
 
 		virtual uint32_t GetWidth() const = 0;
@@ -30,6 +31,7 @@ namespace Sprout
 
 		virtual void SetCallbackFn(const EventCallbackFn& callback) = 0;
 
+		virtual void* GetNativeWindowHandle() const = 0;
 		virtual void* GetNativeWindow() const = 0;
 		virtual void* GetRendererContext() const = 0;
 		static std::shared_ptr<Window> Create(const WindowProperties& properties = WindowProperties());

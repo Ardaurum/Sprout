@@ -61,7 +61,6 @@ namespace Sprout
 		if (FAILED(result))
 		{
 			SPROUT_CORE_ERROR("Vertex shader compilation failed:\n {0}", (char*) vCompileInfo->GetBufferPointer());
-			SPROUT_CORE_ASSERT(false, "Failed to compile vertex shader!");
 		}
 
 		Microsoft::WRL::ComPtr<ID3DBlob> pData = 0;
@@ -83,18 +82,17 @@ namespace Sprout
 		if (FAILED(result))
 		{
 			SPROUT_CORE_ERROR("Pixel shader compilation failed:\n {0}", (char*) pCompileInfo->GetBufferPointer());
-			SPROUT_CORE_ASSERT(false, "Failed to compile pixel shader!");
 		}
 
 		result = DX11Context::Get().GetDevice()->CreateVertexShader(vData->GetBufferPointer(), vData->GetBufferSize(), nullptr, VertexShader.GetAddressOf());
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Failed to create vertex shader!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create vertex shader!");
 
 		result = DX11Context::Get().GetDevice()->CreatePixelShader(pData->GetBufferPointer(), pData->GetBufferSize(), nullptr, PixelShader.GetAddressOf());
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Failed to create fragment shader!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create fragment shader!");
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderReflection> vReflection;
 		D3DReflect(vData->GetBufferPointer(), vData->GetBufferSize(), IID_ID3D11ShaderReflection, (void**) vReflection.GetAddressOf());
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Failed to create vertex shader reflection!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create vertex shader reflection!");
 
 		D3D11_SHADER_DESC vDesc;
 		vReflection->GetDesc(&vDesc);

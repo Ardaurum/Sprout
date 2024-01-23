@@ -3,8 +3,8 @@
 #include "Sprout/Core/App.h"
 
 #include <imgui.h>
-#include <backends/imgui_impl_glfw.h>
-#include <GLFW/glfw3.h>
+#include <backends/imgui_impl_sdl3.h>
+#include <SDL3/SDL.h>
 
 namespace Sprout
 {
@@ -36,14 +36,14 @@ namespace Sprout
 	void ImGuiLayer::OnDetach()
 	{
 		Backend->Shutdown();
-		ImGui_ImplGlfw_Shutdown();
+		ImGui_ImplSDL3_Shutdown();
 		ImGui::DestroyContext();
 	}
 
 	void ImGuiLayer::Begin()
 	{
 		Backend->NewFrame();
-		ImGui_ImplGlfw_NewFrame();
+		ImGui_ImplSDL3_NewFrame();
 		ImGui::NewFrame();
 	}
 
@@ -58,10 +58,8 @@ namespace Sprout
 
 		if (io.ConfigFlags && ImGuiConfigFlags_ViewportsEnable)
 		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
 		}
 	}
 

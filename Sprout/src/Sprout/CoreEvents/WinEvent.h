@@ -7,7 +7,7 @@ namespace Sprout
 	class WinResizeEvent : public Event
 	{
 	public:
-		WinResizeEvent(uint32_t width, uint32_t height) : Width(width), Height(height) {}
+		WinResizeEvent(void* nativeEvent, uint32_t width, uint32_t height) : Event(nativeEvent), Width(width), Height(height) {}
 
 		uint32_t GetWidth() const { return Width; }
 		uint32_t GetHeight() const { return Height; }
@@ -22,6 +22,8 @@ namespace Sprout
 	class WinCloseEvent : public Event
 	{
 	public:
+		WinCloseEvent(void* nativeEvent) : Event(nativeEvent) {}
+
 		EVENT_CATEGORY_TYPE(EventCategory::Window)
 		EVENT_CLASS_TYPE(WinClose)
 	};
@@ -29,6 +31,8 @@ namespace Sprout
 	class WinMinimizeEvent : public Event
 	{
 	public:
+		WinMinimizeEvent(void* nativeEvent) : Event(nativeEvent) {}
+
 		EVENT_CATEGORY_TYPE(EventCategory::Window)
 		EVENT_CLASS_TYPE(WinMinimize)
 	};
@@ -36,6 +40,8 @@ namespace Sprout
 	class WinRestoreEvent : public Event
 	{
 	public:
+		WinRestoreEvent(void* nativeEvent) : Event(nativeEvent) {}
+
 		EVENT_CATEGORY_TYPE(EventCategory::Window)
 		EVENT_CLASS_TYPE(WinRestore)
 	};
@@ -43,7 +49,7 @@ namespace Sprout
 	class WinMaximizeEvent : public Event
 	{
 	public:
-		WinMaximizeEvent(bool maximized) : IsMaximized(maximized) {}
+		WinMaximizeEvent(void* nativeEvent, bool maximized) : Event(nativeEvent), IsMaximized(maximized) {}
 
 		bool GetIsMaximized() const { return IsMaximized; }
 
@@ -57,6 +63,8 @@ namespace Sprout
 	class WinFocusEvent : public Event
 	{
 	public:
+		WinFocusEvent(void* nativeEvent) : Event(nativeEvent) {}
+
 		EVENT_CATEGORY_TYPE(EventCategory::Window)
 		EVENT_CLASS_TYPE(WinFocus)
 	};
@@ -64,6 +72,8 @@ namespace Sprout
 	class WinFocusLostEvent : public Event
 	{
 	public:
+		WinFocusLostEvent(void* nativeEvent) : Event(nativeEvent) {}
+
 		EVENT_CATEGORY_TYPE(EventCategory::Window)
 		EVENT_CLASS_TYPE(WinFocusLost)
 	};
@@ -71,7 +81,7 @@ namespace Sprout
 	class WinMoveEvent : public Event
 	{
 	public:
-		WinMoveEvent(uint32_t x, uint32_t y) : X(x), Y(y) {}
+		WinMoveEvent(void* nativeEvent, uint32_t x, uint32_t y) : Event(nativeEvent), X(x), Y(y) {}
 
 		uint32_t GetX() { return X; }
 		uint32_t GetY() { return Y; }

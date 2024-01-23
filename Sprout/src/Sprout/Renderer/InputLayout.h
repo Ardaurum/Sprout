@@ -39,7 +39,7 @@ namespace Sprout
 			case LayoutDataType::Normal:       return 3;
 			}
 
-			SPROUT_CORE_ASSERT("Unknown LayoutDataType!");
+			SPROUT_CORE_FATAL("Unknown LayoutDataType!");
 			return 0;
 		}
 	};

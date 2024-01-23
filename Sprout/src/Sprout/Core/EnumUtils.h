@@ -1,6 +1,12 @@
 #pragma once
 
+#include "MacroUtils.h"
 #include <type_traits>
+
+#define STRING_ENUM(nspace, name, ...) \
+constexpr std::array<char const*, NUMARGS( __VA_ARGS__ )> name##Strings = {{ __VA_ARGS__ }}; \
+static_assert(NUMARGS( __VA_ARGS__ ) == static_cast<size_t>(nspace::name::Count)); \
+constexpr char const* name##ToString(nspace::name n) { return name##Strings[static_cast<size_t>(n)]; }
 
 template<typename T>
 constexpr auto EnumValue(T e) -> typename std::underlying_type_t<T>

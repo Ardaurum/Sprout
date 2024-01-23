@@ -3,7 +3,6 @@
 
 #include "Renderer.h"
 
-#include "Platform/OpenGL/OpenGLVertexArray.h"
 #include "Platform/DirectX11/DX11VertexArray.h"
 
 namespace Sprout
@@ -13,15 +12,13 @@ namespace Sprout
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:
-			SPROUT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			SPROUT_CORE_FATAL("RendererAPI::None is not supported!");
 			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLVertexArray>();
-		case RendererAPI::API::DirectX11:
+		case RendererAPI::API::Direct3D11:
 			return std::make_shared<DX11VertexArray>();
 		}
 
-		SPROUT_CORE_ASSERT(false, "Unknown Renderer API!");
+		SPROUT_CORE_FATAL("Unknown Renderer API!");
 		return nullptr;
 	}
 }

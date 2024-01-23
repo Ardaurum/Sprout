@@ -23,7 +23,7 @@ namespace Sprout
 		D3D11_SUBRESOURCE_DATA bufferInitData;
 		bufferInitData.pSysMem = vertices;
 		HRESULT result = DX11Context::Get().GetDevice()->CreateBuffer(&bufferDesc, &bufferInitData, BufferHandle.GetAddressOf());
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Creating vertex buffer failed!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Creating vertex buffer failed!");
 	}
 
 	DX11VertexBuffer::~DX11VertexBuffer()
@@ -58,7 +58,7 @@ namespace Sprout
 		D3D11_SUBRESOURCE_DATA bufferInitData;
 		bufferInitData.pSysMem = indices;
 		HRESULT result = DX11Context::Get().GetDevice()->CreateBuffer(&bufferDesc, &bufferInitData, BufferHandle.GetAddressOf());
-		SPROUT_CORE_ASSERT(SUCCEEDED(result), "Creating index buffer failed!");
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Creating index buffer failed!");
 	}
 
 	DX11IndexBuffer::~DX11IndexBuffer()

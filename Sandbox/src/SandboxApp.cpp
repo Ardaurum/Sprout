@@ -14,53 +14,6 @@ public:
 	{
 		CamController = std::make_shared<Sprout::CameraController>(Sprout::CameraType::Perspective, aspect);
 		CamController->SetPosition(glm::vec3(.0f, .0f, 5.0f));
-		
-		std::string glslShaderSrc = R"(
-			#ifdef __SHADER_TYPE_VERTEX__
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 2) in vec4 a_Color;
-
-			layout (std140, binding = 0) uniform uPerFrame
-			{
-				mat4 u_ViewProjection;
-				float u_Time;
-			};
-
-			layout (std140, binding = 1) uniform uPerObject
-			{
-				uniform mat4 u_Model;
-				uniform vec4 u_Tint;
-			};
-
-			out vec3 v_Position;
-			out vec4 v_Color;
-
-			void main()
-			{
-				gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
-				v_Position = a_Position;
-				v_Color = a_Color * u_Tint;
-			}
-			#endif
-
-			#ifdef __SHADER_TYPE_FRAGMENT__
-			layout(location = 0) out vec4 out_color;
-
-			layout (std140, binding = 0) uniform uPerFrame
-			{
-				mat4 u_ViewProjection;
-				float u_Time;
-			};
-
-			in vec3 v_Position;
-			in vec4 v_Color;
-
-			void main()
-			{
-				out_color = v_Color * (sin(u_Time) + 1.0) / 2.0;
-			}
-			#endif	
-		)";
 
 		std::string hlslShaderSrc = R"(
 			cbuffer cbPerFrame : register(b0)
@@ -99,13 +52,10 @@ public:
 			}
 		)";
 
-		//GLSL Shaders
-		ShaderLibrary.LoadFromSrc("PulseShader", glslShaderSrc);
-		ShaderLibrary.LoadFromPath("assets/shaders/Texture.glsl");
 
 		//HLSL Shaders
-		//ShaderLibrary.LoadFromSrc("PulseShader", hlslShaderSrc);
-		//ShaderLibrary.LoadFromPath("assets/shaders/Texture.hlsl");
+		ShaderLibrary.LoadFromSrc("PulseShader", hlslShaderSrc);
+		ShaderLibrary.LoadFromPath("assets/shaders/Texture.hlsl");
 
 		Texture = Sprout::Texture2D::Create("assets/textures/Checkerboard.png");
 		PoppyTexture = Sprout::Texture2D::Create("assets/textures/Poppy.png");
@@ -170,7 +120,6 @@ public:
 
 	void OnImGuiRender() override
 	{
-		ImGui::ShowDemoWindow();
 		ImGui::Begin("Camera settings");
 		glm::vec3 oldCamPos = CamController->GetPosition();
 		float pos[3] = { oldCamPos.x, oldCamPos.y, oldCamPos.z };
@@ -190,14 +139,13 @@ private:
 	std::shared_ptr<Sprout::CameraController> CamController;
 	std::shared_ptr<Sprout::Texture2D> Texture, PoppyTexture;
 
-	glm::vec2 MousePos;
 	float AccumulatedTime = .0f;
 };
 
 class Sandbox : public Sprout::App
 {
 public:
-	Sandbox()
+	Sandbox() : App("Sprout Sandbox")
 	{
 		
 	}
@@ -207,6 +155,11 @@ public:
 	
 	}
 };
+
+void Sprout::DefineGameCLIArgs()
+{
+
+}
 
 Sprout::App* Sprout::CreateApp()
 {

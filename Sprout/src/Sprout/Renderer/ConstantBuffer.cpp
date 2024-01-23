@@ -3,7 +3,6 @@
 #include "Renderer.h"
 
 #include "Platform/DirectX11/DX11ConstantBuffer.h"
-#include "Platform/OpenGL/OpenGLConstantBuffer.h"
 
 namespace Sprout
 {
@@ -12,15 +11,13 @@ namespace Sprout
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:
-			SPROUT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			SPROUT_CORE_FATAL("RendererAPI::None is not supported!");
 			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLConstantBuffer>(size, binding);
-		case RendererAPI::API::DirectX11:
+		case RendererAPI::API::Direct3D11:
 			return std::make_shared<DX11ConstantBuffer>(applyTo, size, binding);
 		}
 
-		SPROUT_CORE_ASSERT(false, "Unknown Renderer API!");
+		SPROUT_CORE_FATAL("Unknown Renderer API!");
 		return nullptr;
 	}
 }

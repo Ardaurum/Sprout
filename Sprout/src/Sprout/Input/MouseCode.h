@@ -2,21 +2,21 @@
 
 namespace Sprout
 {
+	// From SDL_mouse.h
 	enum class MouseCode
 	{
-		// From glfw3.h
-		Button0                = 0,
-		Button1                = 1,
-		Button2                = 2,
-		Button3                = 3,
-		Button4                = 4,
-		Button5                = 5,
-		Button6                = 6,
-		Button7                = 7,
+		Button0 = 1,
+		Button1 = 2,
+		Button2 = 3,
+		Button3 = 4,
+		Button4 = 5,
+		Button5 = 6,
+		Button6 = 7,
+		Button7 = 8,
 
-		ButtonLast             = Button7,
-		ButtonLeft             = Button0,
-		ButtonRight            = Button1,
-		ButtonMiddle           = Button2
+		ButtonLast = Button7,
+		ButtonLeft = Button0,
+		ButtonRight = Button2,
+		ButtonMiddle = Button1
 	};
 }

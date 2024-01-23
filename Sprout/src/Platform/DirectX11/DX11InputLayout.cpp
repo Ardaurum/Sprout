@@ -16,7 +16,7 @@ namespace Sprout
 		case LayoutDataType::Normal:    return DXGI_FORMAT_R32G32B32_FLOAT;
 		}
 
-		SPROUT_CORE_ASSERT(false, "Unknown LayoutDataType!");
+		SPROUT_CORE_ERROR("Unknown LayoutDataType!");
 		return DXGI_FORMAT_UNKNOWN;
 	}
 
@@ -30,7 +30,7 @@ namespace Sprout
 		case LayoutDataType::Normal:    return "float3";
 		}
 
-		SPROUT_CORE_ASSERT(false, "Unknown LayoutDataType!");
+		SPROUT_CORE_ERROR("Unknown LayoutDataType!");
 		return 0;
 	}
 
@@ -65,7 +65,7 @@ namespace Sprout
 				shaderData[i].VSData->GetBufferSize(), 
 				layout.GetAddressOf()
 			);
-			SPROUT_CORE_ASSERT(SUCCEEDED(result), "Input layout creation failed!");
+			SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Input layout creation failed!");
 			Layouts[shaderData[i].Type] = std::move(layout);
 		}
     }
@@ -73,7 +73,7 @@ namespace Sprout
 	void DX11InputLayout::Bind()
 	{
 		LayoutDataType shaderLayout = DX11Shader::GetCurrent()->GetLayoutType();
-		SPROUT_CORE_ASSERT(Layouts.find(shaderLayout) != Layouts.end(), "Layout not created for this shader!");
+		SPROUT_CORE_ASSERT_MSG(Layouts.find(shaderLayout) != Layouts.end(), "Layout not created for this shader!");
 		DX11Context::Get().GetDeviceContext()->IASetInputLayout(Layouts[shaderLayout].Get());
 	}
 
@@ -131,7 +131,6 @@ namespace Sprout
 			if (FAILED(result))
 			{
 				SPROUT_CORE_ERROR("Vertex layout shader compilation failed:\n {0}", (char*) vsCompileInfo->GetBufferPointer());
-				SPROUT_CORE_ASSERT(false, "Failed to compile vertex layout shader!");
 			}
 
 			Database[desc.GetType()] = vsData;

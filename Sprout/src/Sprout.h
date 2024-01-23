@@ -5,6 +5,7 @@
 #include "Sprout/Core/App.h"
 #include "Sprout/Core/Layer.h"
 #include "Sprout/Core/Log.h"
+#include "Sprout/Core/CLISystem.h"
 #include "Sprout/Core/Assert.h"
 #include "Sprout/Core/Timestep.h"
 

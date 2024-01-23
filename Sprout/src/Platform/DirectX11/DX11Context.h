@@ -1,17 +1,15 @@
 #pragma once
 #include "Sprout/Renderer/RendererContext.h"
 
-#include <GLFW/glfw3.h>
-
-#include <wrl/client.h>
 #include <d3d11.h>
+#include <wrl/client.h>
 
 namespace Sprout
 {
 	class DX11Context : public RendererContext
 	{
 	public:
-		DX11Context(GLFWwindow* windowHandle);
+		DX11Context(Window* windowHandle);
 
 		void Init() override;
 		void SwapBuffers() override;
@@ -23,8 +21,8 @@ namespace Sprout
 		inline ID3D11RenderTargetView* GetRenderTargetView() { return RenderTarget.Get(); }
 
 	private:
-		GLFWwindow* WindowHandle;
-
+		Window* WindowHandle;
+		
 		Microsoft::WRL::ComPtr<ID3D11Device> Device;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> Context;
 		Microsoft::WRL::ComPtr<IDXGISwapChain> SwapChain;

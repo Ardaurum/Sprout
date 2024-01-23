@@ -362,6 +362,11 @@ bin-int
 **/CMakeScripts
 **/compile_commands.json
 
+# Binaries
+**/bin/
+bin-int/
+Intermediates/
+
 # Additional
 *.dll
 *.exe
@@ -370,3 +375,12 @@ bin-int
 *.vcproj.*.user
 [Dd]ebug
 [Rr]elease
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
+
+
+Sprout/vendor/

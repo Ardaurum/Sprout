@@ -27,20 +27,19 @@ project "Sprout"
 	{
 		"src",
 		"vendor/spdlog/include",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.sdl}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}"
 	}
 
 	links
 	{
-		"GLFW",
-		"Glad",
-		"ImGui",
-		"opengl32.lib",
-		"d3d11.lib"
+		"SDL3-shared",
+		"imgui",
+		"d3d11.lib",
+		"d3d12.lib"
 	}
 
 	filter "configurations:Debug"
@@ -63,7 +62,5 @@ project "Sprout"
 
 		defines 
 		{
-			"GLFW_INCLUDE_NONE",
-			"GLFW_EXPOSE_NATIVE_WIN32",
 			"SPROUT_DX11"
 		}

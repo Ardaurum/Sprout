@@ -5,16 +5,16 @@
 #include "DX11Context.h"
 
 #include <backends/imgui_impl_dx11.h>
-#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_sdl3.h>
 
 namespace Sprout
 {
 	void DX11ImGuiBackend::Init(const Window& window)
 	{
-		GLFWwindow* nativeWindow = static_cast<GLFWwindow*>(window.GetNativeWindow());
+		SDL_Window* nativeWindow = static_cast<SDL_Window*>(window.GetNativeWindow());
 		DX11Context* dx11Context = static_cast<DX11Context*>(window.GetRendererContext());
 
-		ImGui_ImplGlfw_InitForOther(nativeWindow, true);
+		ImGui_ImplSDL3_InitForD3D(nativeWindow);
 		ImGui_ImplDX11_Init(dx11Context->GetDevice(), dx11Context->GetDeviceContext());
 	}
 
