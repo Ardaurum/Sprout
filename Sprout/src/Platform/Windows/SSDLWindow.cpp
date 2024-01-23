@@ -27,7 +27,9 @@ namespace Sprout
 	{
 		SPROUT_CORE_INFO("Creating window \"{0}\": {1}, {2}", properties.Title, properties.Width, properties.Height);
 
+#ifdef SPROUT_DEBUG
 		ContextInitialized = false;
+#endif
 		WinData.Title = properties.Title + ": " + RendererAPI::ToString(RendererAPI::GetAPI());
 		WinData.Height = properties.Height;
 		WinData.Width = properties.Width;
