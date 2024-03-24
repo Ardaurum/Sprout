@@ -4,8 +4,13 @@
 
 namespace Sprout
 {
+	class DX11LayoutShaderLibrary;
+
 	class DX11RendererAPI : public RendererAPI
 	{
+	public:
+		DX11RendererAPI();
+
 		virtual void Init() override;
 
 		virtual void SetClearColor(const glm::vec4& color) override;
@@ -15,5 +20,8 @@ namespace Sprout
 
 	private:
 		FLOAT ClearColor[4];
+
+	// System Singletons
+		std::unique_ptr<DX11LayoutShaderLibrary> LayoutShaderLibrary;
 	};
 }

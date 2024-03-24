@@ -17,6 +17,7 @@ namespace Sprout
 
 	private:
 		static void SetupAPI();
+		static void Destroy();
 
 		static std::unique_ptr<RendererAPI> API;
 

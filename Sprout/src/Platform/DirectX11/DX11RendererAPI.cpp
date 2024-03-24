@@ -3,9 +3,15 @@
 
 #include "DX11Context.h"
 #include "DX11Buffer.h"
+#include "DX11InputLayout.h"
 
 namespace Sprout
 {
+	DX11RendererAPI::DX11RendererAPI() : RendererAPI(), ClearColor{}
+	{
+		LayoutShaderLibrary = std::make_unique<DX11LayoutShaderLibrary>();
+	}
+
 	void DX11RendererAPI::Init()
 	{
 		DX11Context::Get().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

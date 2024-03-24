@@ -1,8 +1,9 @@
 #include "spch.h"
 #include "Sprout/Input/Input.h"
+#include "Sprout/Input/KeyCode.h"
 
-#include "Sprout/Core/App.h"
-#include "SDL3/SDL.h"
+#include <glm/glm.hpp>
+#include <SDL3/SDL.h>
 
 namespace Sprout
 {

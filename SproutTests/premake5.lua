@@ -1,5 +1,5 @@
-project "Sandbox"
-	kind "ConsoleApp"
+project "SproutTests"
+	kind "SharedLib"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "Off"
@@ -44,15 +44,6 @@ project "Sandbox"
 
 	filter "configurations:Release"
 		defines { "SPROUT_RELEASE" }
-		runtime "Release"
-		optimize "On"
-		postbuildcommands
-		{
-			"{COPYFILE} %{copysrcRel} %{cfg.targetdir}"
-		}
-
-	filter "configurations:Dist"
-		defines { "SPROUT_DIST" }
 		runtime "Release"
 		optimize "On"
 		postbuildcommands

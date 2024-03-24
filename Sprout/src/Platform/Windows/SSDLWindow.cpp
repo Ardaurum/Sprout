@@ -83,6 +83,7 @@ namespace Sprout
 			{
 				HandleSDLEvent(sdlEvent);
 			}
+			ImGui_ImplSDL3_ProcessEvent(&sdlEvent);
 		}
 
 		Context->SwapBuffers();
@@ -95,7 +96,6 @@ namespace Sprout
 			HandleSDLWindowEvent(sdlEvent.window);
 		}
 
-		ImGui_ImplSDL3_ProcessEvent(&sdlEvent);
 		switch (sdlEvent.type)
 		{
 			// Mouse Events

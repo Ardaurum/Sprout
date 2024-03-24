@@ -6,6 +6,8 @@
 
 namespace Sprout
 {
+	DX11LayoutShaderLibrary* DX11LayoutShaderLibrary::Instance;
+
 	constexpr static DXGI_FORMAT LayoutDataTypeDX11Format(LayoutDataType type)
 	{
 		switch(type)
@@ -51,10 +53,10 @@ namespace Sprout
 			elementDesc.InputSlot = 0;
 			elementDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			elementDesc.InstanceDataStepRate = 0;
-			layoutDesc.emplace_back(elementDesc);
+			layoutDesc.push_back(elementDesc);
 		}
 
-		std::vector<LayoutShaderData> shaderData = DX11LayoutShaderLibrary::Get()->GetVSDataByInputLayout(desc);
+		std::vector<LayoutShaderData> shaderData = DX11LayoutShaderLibrary::Get().GetVSDataByInputLayout(desc);
 		for (size_t i = 0; i < shaderData.size(); i++)
 		{
 			Microsoft::WRL::ComPtr<ID3D11InputLayout> layout;
@@ -82,6 +84,12 @@ namespace Sprout
 	}
 
 	// ======================================= DX11LayoutShaderLibrary ===============================================
+
+	DX11LayoutShaderLibrary::DX11LayoutShaderLibrary()
+	{
+		SPROUT_CORE_ASSERT_MSG(!Instance, "DX11LayoutShaderLibrary already exists!");
+		Instance = this;
+	}
 
 	ID3DBlob* DX11LayoutShaderLibrary::GetVSDataByShaderLayout(const LayoutDataType& layoutType)
 	{

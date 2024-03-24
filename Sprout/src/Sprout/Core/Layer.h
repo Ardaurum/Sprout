@@ -9,7 +9,7 @@ namespace Sprout
 	{
 	public:
 		Layer(const std::string& name) : Name(name) {}
-		~Layer() = default;
+		virtual ~Layer() = default;
 
 		virtual void OnAttach() {};
 		virtual void OnDetach() {};

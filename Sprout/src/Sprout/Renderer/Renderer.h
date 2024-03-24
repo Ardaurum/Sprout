@@ -11,6 +11,7 @@ namespace Sprout
 	{
 	public:
 		static void PrepareAPI(const RendererAPI::API api);
+		static void Destroy();
 
 		static void Init();
 

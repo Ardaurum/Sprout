@@ -52,12 +52,12 @@ namespace Sprout
             else
             {
                 auto const symbolIt = SymbolMap.find(currentArg[1]);
-                SPROUT_CORE_ASSERT_MSG(symbolIt != SymbolMap.end(), "There's no definition for symbol: ", currentArg);
+                SPROUT_CORE_ASSERT_MSG(symbolIt != SymbolMap.end(), "There's no definition for symbol: {0}", currentArg);
                 option = symbolIt->second;
             }
 
             auto const definitionIt = Definitions.find(option);
-            SPROUT_CORE_ASSERT_MSG(definitionIt != Definitions.end(), "There's no definition for identifier: ", currentArg);
+            SPROUT_CORE_ASSERT_MSG(definitionIt != Definitions.end(), "There's no definition for identifier: {0}", currentArg);
             CLIDefinition const& definition = definitionIt->second;
 
             SPROUT_CORE_ASSERT_MSG(Values.find(option) == Values.end(), "Argument {0} was already parsed!", definition.DebugName);

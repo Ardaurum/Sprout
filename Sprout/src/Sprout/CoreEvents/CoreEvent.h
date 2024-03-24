@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Sprout/Core/Core.h"
 #include "Sprout/Core/EnumUtils.h"
 
 namespace Sprout

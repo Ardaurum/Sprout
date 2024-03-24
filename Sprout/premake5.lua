@@ -3,6 +3,8 @@ project "Sprout"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "Off"
+	externalanglebrackets "On"
+	externalwarnings "Off"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")

@@ -1,18 +1,10 @@
-#pragma once
-
 #include "spch.h"
 #include "App.h"
 
 #include "CLISystem.h"
 #include "Layer.h"
-#include "LayerStack.h"
 #include "Timestep.h"
 #include "Sprout/Renderer/Renderer.h"
-
-#include <imgui.h>
-
-#define SDL_MAIN_HANDLED
-#include "SDL3/SDL.h"
 
 namespace Sprout 
 {
@@ -50,7 +42,7 @@ namespace Sprout
 
 	App::~App() 
 	{
-		
+		Renderer::Destroy();
 	}
 
 	void App::Run() 

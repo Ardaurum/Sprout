@@ -39,6 +39,8 @@ namespace Sprout
 	class DX11LayoutShaderLibrary
 	{
 	public:
+		DX11LayoutShaderLibrary();
+
 		ID3DBlob* GetVSDataByShaderLayout(const LayoutDataType& layoutType);
 		std::vector<LayoutShaderData> GetVSDataByInputLayout(const LayoutDesc& layoutType);
 		
@@ -46,9 +48,12 @@ namespace Sprout
 		std::unordered_map<LayoutDataType, Microsoft::WRL::ComPtr<ID3DBlob>> Database;
 
 	public:
-		static DX11LayoutShaderLibrary* Get() { 
-			static DX11LayoutShaderLibrary Instance;
-			return &Instance; 
+		static inline DX11LayoutShaderLibrary& Get() { 
+			SPROUT_CORE_ASSERT_MSG(Instance, "DX11RendererAPI wasn't Initialized!");
+			return *Instance; 
 		}
+
+	private:
+		static DX11LayoutShaderLibrary* Instance;
 	};
 }

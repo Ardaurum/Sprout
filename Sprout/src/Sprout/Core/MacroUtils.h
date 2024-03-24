@@ -2,6 +2,7 @@
 
 #define EMPTY
 #define EXPAND(x) x
+#define TOSTRING(x) #x
 
 // NUMARGS based on a great answer by Kornel Kisielewicz https://stackoverflow.com/questions/2124339/c-preprocessor-va-args-number-of-arguments/2124385#2124385
 #define NUMARGS(...) \

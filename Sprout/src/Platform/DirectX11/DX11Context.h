@@ -13,6 +13,7 @@ namespace Sprout
 
 		void Init() override;
 		void SwapBuffers() override;
+		void WaitForGPU() override {}
 
 		void OnResize();
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core.h"
 #include "Window.h"
 
 #include "Sprout/CoreEvents/CoreEvent.h"
@@ -8,10 +7,6 @@
 
 #include "Sprout/Core/LayerStack.h"
 #include "Sprout/ImGui/ImGuiLayer.h"
-
-#include "Sprout/Renderer/Buffer.h"
-#include "Sprout/Renderer/VertexArray.h"
-#include "Sprout/Renderer/Camera.h"
 
 namespace Sprout
 {

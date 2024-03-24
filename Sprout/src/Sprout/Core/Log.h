@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Sprout/Core/Core.h"
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 namespace Sprout
 {

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "glm/glm.hpp"
-#include "KeyCode.h"
 #include "MouseCode.h"
+#include "KeyCode.h"
+
+#include <glm/fwd.hpp>
 
 namespace Sprout
 {

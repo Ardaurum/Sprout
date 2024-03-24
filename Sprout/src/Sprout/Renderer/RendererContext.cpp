@@ -18,6 +18,12 @@ namespace Sprout
 			return std::make_shared<DX11Context>(windowHandle);
 		case RendererAPI::API::Direct3D12:
 			return std::make_shared<DX12Context>(windowHandle);
+		case RendererAPI::API::Vulkan:
+			SPROUT_CORE_FATAL("RendererAPI::Vulkan is not supported!");
+			return nullptr;
+		default:
+			SPROUT_CORE_FATAL("Unsupported renderer API!");
+			return nullptr;
 		}
 
 		SPROUT_CORE_FATAL("Unknown Renderer API!");

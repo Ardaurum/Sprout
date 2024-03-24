@@ -2,7 +2,6 @@
 #include "ImGuiBackend.h"
 
 #include "Sprout/Renderer/RendererAPI.h"
-#include "Sprout/Core/Window.h"
 
 #include "Platform/DirectX11/DX11ImGuiBackend.h"
 

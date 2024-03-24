@@ -1,4 +1,6 @@
 #include "Sprout.h"
+
+#define SPROUT_DEBUG_MEMORY_LEAKS
 #include "Sprout/Core/EntryPoint.h"
 
 #include <chrono>
@@ -150,7 +152,7 @@ public:
 		
 	}
 
-	~Sandbox()
+	virtual ~Sandbox()
 	{
 	
 	}
@@ -165,5 +167,6 @@ Sprout::App* Sprout::CreateApp()
 {
 	Sandbox* sandbox = new Sandbox();
 	sandbox->PushLayer(new SandboxLayer(sandbox->GetWindow().GetAspect()));
+
 	return sandbox;
 }

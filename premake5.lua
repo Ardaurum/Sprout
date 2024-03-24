@@ -33,3 +33,4 @@ group ""
 
 include "Sprout"
 include "Sandbox"
+include "SproutTests"

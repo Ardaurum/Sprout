@@ -2,6 +2,7 @@
 #include "RenderCommand.h"
 
 #include "Platform/DirectX11/DX11RendererAPI.h"
+#include "Platform/DirectX12/DX12RendererAPI.h"
 #include "Platform/FakeRenderer/FakeRendererAPI.h"
 
 namespace Sprout 
@@ -18,9 +19,17 @@ namespace Sprout
 		case RendererAPI::API::Direct3D11:
 			API = std::make_unique<DX11RendererAPI>();
 			break;
+		case RendererAPI::API::Direct3D12:
+			API = std::make_unique<DX12RendererAPI>();
+			break;
 		default:
 			SPROUT_CORE_FATAL("Unknown Renderer API!");
 			break;
 		}
+	}
+
+	void RenderCommand::Destroy()
+	{
+		API = std::make_unique<FakeRendererAPI>();
 	}
 }

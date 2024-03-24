@@ -9,6 +9,7 @@ namespace Sprout
 	public:
 		virtual void Init() = 0;
 		virtual void SwapBuffers() = 0;
+		virtual void WaitForGPU() = 0;
 
 		static std::shared_ptr<RendererContext> Create(Window* windowHandle);
 	};
