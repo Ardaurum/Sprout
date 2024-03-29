@@ -5,31 +5,31 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace SproutTests
 {
-	TEST_CLASS(CollectionTests)
+	TEST_CLASS(SparseArrayTests)
 	{
 	public:
-		TEST_METHOD(SparseArray_Insert_OneElement_CollectionContainsIt)
+		TEST_METHOD(Insert_OneElement_CollectionContainsIt)
 		{
 			Sprout::SparseArray<uint32_t> testArr;
 			testArr.Insert(0, 1);
 			Assert::AreEqual(true, testArr.Has(0));
 		}
 
-		TEST_METHOD(SparseArray_Insert_OneElement_ValueEquals)
+		TEST_METHOD(Insert_OneElement_ValueEquals)
 		{
 			Sprout::SparseArray<uint32_t> testArr;
 			testArr.Insert(0, 4);
 			Assert::AreEqual(4u, testArr[0]);
 		}
 
-		TEST_METHOD(SparseArray_Insert_WithoutValue_AddsElementWithDefaultValue)
+		TEST_METHOD(Insert_WithoutValue_AddsElementWithDefaultValue)
 		{
 			Sprout::SparseArray<uint32_t> testArr;
 			testArr.Insert(4);
 			Assert::AreEqual(0u, testArr[4]);
 		}
 
-		TEST_METHOD(SparseArray_Clear_WithTwoElements_RemovesAllElements)
+		TEST_METHOD(Clear_WithTwoElements_RemovesAllElements)
 		{
 			Sprout::SparseArray<uint32_t> testArr;
 			testArr.Insert(0, 1);
@@ -38,7 +38,7 @@ namespace SproutTests
 			Assert::AreEqual(true, testArr.IsEmpty());
 		}
 
-		TEST_METHOD(SparseArray_Erase_WithTwoElement_DeletesOnlyOneElement)
+		TEST_METHOD(Erase_WithTwoElement_DeletesOnlyOneElement)
 		{
 			Sprout::SparseArray<uint32_t> testArr;
 			testArr.Insert(0, 1);
@@ -47,7 +47,7 @@ namespace SproutTests
 			Assert::AreEqual(false, testArr.Has(0));
 		}
 
-		TEST_METHOD(SparseArray_Swap_TwoArrays_SwapsInternalData)
+		TEST_METHOD(Swap_TwoArrays_SwapsInternalData)
 		{
 			Sprout::SparseArray<uint32_t> testArrA;
 			Sprout::SparseArray<uint32_t> testArrB;
@@ -58,7 +58,7 @@ namespace SproutTests
 			Assert::AreEqual(4u, testArrB[2]);
 		}
 
-		TEST_METHOD(SparseArray_CopyOperator_FilledArray_FillsTheSecondArrayWithSameDataButDifferentMemory)
+		TEST_METHOD(CopyOperator_FilledArray_FillsTheSecondArrayWithSameDataButDifferentMemory)
 		{
 			Sprout::SparseArray<uint32_t> testArrA;
 			Sprout::SparseArray<uint32_t> testArrB;
@@ -70,7 +70,7 @@ namespace SproutTests
 			Assert::AreNotEqual(&testArrA[2], &testArrB[2]);
 		}
 
-		TEST_METHOD(SparseArray_MoveOperator_FilledArray_FillsTheSecondArrayAndDestroysAllDataFromFirst)
+		TEST_METHOD(MoveOperator_FilledArray_FillsTheSecondArrayAndDestroysAllDataFromFirst)
 		{
 			Sprout::SparseArray<uint32_t> testArrA;
 			Sprout::SparseArray<uint32_t> testArrB;
@@ -80,7 +80,50 @@ namespace SproutTests
 			Assert::AreEqual(0u, testArrA.GetCapacity());
 			Assert::AreEqual(2u, testArrB.GetSize());
 		}
+	};
 
-		//TEST_METHOD(Freelist_WithName_ReturnsName)
+	TEST_CLASS(Freelist)
+	{
+		Sprout::Freelist testList;
+
+		TEST_METHOD_CLEANUP(Cleanup)
+		{
+			testList.Clear();
+		}
+
+		TEST_METHOD(AllocateFirstSlot_ReturnsFirstIndex)
+		{
+			uint32_t slot = testList.AllocateSlot();
+			Assert::AreEqual(0u, slot);
+		}
+
+		TEST_METHOD(AllocateSecondSlot_ReturnsSecondIndex)
+		{
+			uint32_t slot1 = testList.AllocateSlot();
+			uint32_t slot2 = testList.AllocateSlot();
+			Assert::AreEqual(1u, slot2);
+		}
+
+		TEST_METHOD(AllocateThreeSlots_ReturnsFirstIndex)
+		{
+			uint32_t slot = testList.AllocateSlots(3);
+			Assert::AreEqual(0u, slot);
+		}
+
+		TEST_METHOD(AllocateThreeSlotsTwice_SecondSlotIsGreaterThanPreviousAllocatedSize)
+		{
+			uint32_t slot1 = testList.AllocateSlots(3);
+			uint32_t slot2 = testList.AllocateSlots(3);
+			Assert::IsTrue(slot2 >= 3u);
+		}
+
+		TEST_METHOD(AllocateSlotsFreeAndAllocateNewOne_ReusesFreedSlots)
+		{
+			uint32_t slot1 = testList.AllocateSlots(3);
+			uint32_t slot2 = testList.AllocateSlots(3);
+			testList.FreeSlot(slot1);
+			uint32_t slot3 = testList.AllocateSlot();
+			Assert::AreEqual(0u, slot3);
+		}
 	};	
 }

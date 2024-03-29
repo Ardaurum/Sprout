@@ -20,7 +20,7 @@ namespace Sprout
 
 	void DX12RendererAPI::Clear()
 	{
-		DX12Context context = DX12Context::Get();
+		//DX12Context context = DX12Context::Get();
 		//context.GetDeviceContext()->ClearRenderTargetView(context.GetRenderTargetView(), ClearColor);
 	}
 

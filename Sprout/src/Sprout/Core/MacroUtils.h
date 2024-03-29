@@ -25,3 +25,13 @@
          29,28,27,26,25,24,23,22,21,20, \
          19,18,17,16,15,14,13,12,11,10, \
          9,8,7,6,5,4,3,2,1,0
+
+#define SPROUT_NON_COPYABLE(Type) Type(Type const&) = delete; Type& operator=(Type const&) = delete; 
+
+#define SIMPLE_TYPE_WRAPPER(Name, Type) \
+    struct Name { \
+        Name() : value() {} \
+        explicit Name(Type val) : value(val) {} \
+        explicit operator Type() const { return value; } \
+        Type value; \
+    }; 

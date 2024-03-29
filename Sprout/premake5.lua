@@ -40,8 +40,10 @@ project "Sprout"
 	{
 		"SDL3-shared",
 		"imgui",
-		"d3d11.lib",
-		"d3d12.lib"
+		"d3d11",
+		"d3d12",
+		"dxgi",
+		"d3dcompiler"
 	}
 
 	filter "configurations:Debug"

@@ -371,7 +371,8 @@ namespace Sprout
             std::swap(Size, other.Size);
         }
 
-        static uint32_t const InvalidSlotConst = std::numeric_limits<uint32_t>::max() - 1;
+        static uint32_t const ALLOCATED_SLOT = std::numeric_limits<uint32_t>::max() - 1;
+        static uint32_t const INVALID_SLOT = std::numeric_limits<uint32_t>::max();
 
     private:
         inline void Grow(uint32_t slot_count = 1);
@@ -392,7 +393,7 @@ namespace Sprout
         : Name()
         , Slots(nullptr)
         , SlotCounts(nullptr)
-        , NextSlot(std::numeric_limits<uint32_t>::max())
+        , NextSlot(INVALID_SLOT)
         , Size(0)
     {
     }
@@ -401,7 +402,7 @@ namespace Sprout
         : Name(name)
         , Slots(nullptr)
         , SlotCounts(nullptr)
-        , NextSlot(std::numeric_limits<uint32_t>::max())
+        , NextSlot(INVALID_SLOT)
         , Size(0)
     {
     }
@@ -410,7 +411,7 @@ namespace Sprout
     {
 #ifdef SPROUT_DEBUG
         uint32_t const freeSlotsCount = FreeSlotsCount();
-        SPROUT_CORE_ASSERT_MSG(freeSlotsCount == Size, "Freelist: {0} wasn't freed properly; detected memory leak: {1}", Name.empty() ? "Freelist" : Name, Size - freeSlotsCount);
+        SPROUT_CORE_ASSERT_MSG(freeSlotsCount == Size, "Freelist: {0} wasn't freed properly; detected memory leak: {1}", Name.empty() ? "Freelist" : Name.c_str(), Size - freeSlotsCount);
 #endif //! _DEBUG
         Name = {};
         delete[] Slots;
@@ -428,7 +429,7 @@ namespace Sprout
         other.Name = {};
         other.Slots = nullptr;
         other.SlotCounts = nullptr;
-        other.NextSlot = std::numeric_limits<uint32_t>::max();
+        other.NextSlot = INVALID_SLOT;
         other.Size = 0;
     }
 
@@ -446,24 +447,24 @@ namespace Sprout
 
     uint32_t Freelist::AllocateSlot()
     {
-        if (NextSlot == std::numeric_limits<uint32_t>::max())
+        if (NextSlot == INVALID_SLOT)
         {
             Grow();
         }
-        SPROUT_CORE_ASSERT_MSG(NextSlot != std::numeric_limits<uint32_t>::max(), "Out of memory!");
+        SPROUT_CORE_ASSERT_MSG(NextSlot != INVALID_SLOT, "Out of memory!");
         uint32_t const slot = NextSlot;
         NextSlot = Slots[NextSlot];
-        Slots[slot] = InvalidSlotConst;
+        Slots[slot] = ALLOCATED_SLOT;
         SlotCounts[slot] = 1;
         return slot;
     }
 
     uint32_t Freelist::AllocateSlots(uint32_t slotCount)
     {
-        uint32_t slot = std::numeric_limits<uint32_t>::max();
+        uint32_t slot = INVALID_SLOT;
         if (slotCount == 0)
         {
-            return std::numeric_limits<uint32_t>::max();
+            return INVALID_SLOT;
         }
 
         if (slotCount == 1)
@@ -471,13 +472,13 @@ namespace Sprout
             return AllocateSlot();
         }
 
-        for (uint32_t nextSlot = NextSlot; nextSlot != std::numeric_limits<uint32_t>::max(); nextSlot = Slots[nextSlot])
+        for (uint32_t nextSlot = NextSlot; nextSlot != INVALID_SLOT; nextSlot = Slots[nextSlot])
         {
             bool isBlockAvailable = true;
             if (nextSlot + slotCount > Size) continue;
             for (uint32_t i = 1; i < slotCount; ++i)
             {
-                if (Slots[nextSlot + i] == InvalidSlotConst)
+                if (Slots[nextSlot + i] == ALLOCATED_SLOT)
                 {
                     isBlockAvailable = false;
                     break;
@@ -490,24 +491,24 @@ namespace Sprout
             }
         }
 
-        if (slot == std::numeric_limits<uint32_t>::max())
+        if (slot == INVALID_SLOT)
         {
             slot = Size;
             Grow(slotCount);
         }
 
-        SPROUT_CORE_ASSERT_MSG(slot != std::numeric_limits<uint32_t>::max(), "No slot available!");
+        SPROUT_CORE_ASSERT_MSG(slot != INVALID_SLOT, "No slot available!");
         SPROUT_CORE_ASSERT_MSG(slot + slotCount <= Size, "Can't allocate: {0} slots", slotCount);
 
-        uint32_t previousSlot = std::numeric_limits<uint32_t>::max();
+        uint32_t previousSlot = INVALID_SLOT;
         uint32_t nextSlot = NextSlot;
-        NextSlot = std::numeric_limits<uint32_t>::max();
+        NextSlot = INVALID_SLOT;
 
-        for (; nextSlot != std::numeric_limits<uint32_t>::max();)
+        for (; nextSlot != INVALID_SLOT;)
         {
             if (nextSlot < slot || nextSlot >= slot + slotCount)
             {
-                if (previousSlot == std::numeric_limits<uint32_t>::max())
+                if (previousSlot == INVALID_SLOT)
                 {
                     NextSlot = nextSlot;
                 }
@@ -516,12 +517,12 @@ namespace Sprout
             }
             else
             {
-                if (previousSlot != std::numeric_limits<uint32_t>::max())
+                if (previousSlot != INVALID_SLOT)
                 {
                     Slots[previousSlot] = Slots[nextSlot];
                 }
                 uint32_t const previousNextSlot = Slots[nextSlot];
-                Slots[nextSlot] = InvalidSlotConst;
+                Slots[nextSlot] = ALLOCATED_SLOT;
                 nextSlot = previousNextSlot;
             }
         }
@@ -542,8 +543,8 @@ namespace Sprout
             return;
         }
 
-        SPROUT_CORE_ASSERT_MSG(Slots[slot] == InvalidSlotConst, "Slot is already freed!");
-        if (Slots[slot] != InvalidSlotConst)
+        SPROUT_CORE_ASSERT_MSG(Slots[slot] == ALLOCATED_SLOT, "Slot is already freed!");
+        if (Slots[slot] != ALLOCATED_SLOT)
         {
             return;
         }
@@ -558,7 +559,7 @@ namespace Sprout
         while (i-- > slot)
         {
             SPROUT_CORE_ASSERT_MSG(i == slot || SlotCounts[i] == 0, "");
-            SPROUT_CORE_ASSERT_MSG(Slots[i] == InvalidSlotConst, "Slot is already freed!");
+            SPROUT_CORE_ASSERT_MSG(Slots[i] == ALLOCATED_SLOT, "Slot is already freed!");
             Slots[i] = NextSlot;
             SlotCounts[i] = 0;
             NextSlot = i;
@@ -577,14 +578,14 @@ namespace Sprout
 
         Slots = nullptr;
         SlotCounts = nullptr;
-        NextSlot = std::numeric_limits<uint32_t>::max();
+        NextSlot = INVALID_SLOT;
         Size = 0;
     }
 
     uint32_t Freelist::FreeSlotsCount() const
     {
         uint32_t freeSlotCount = 0;
-        for (uint32_t nextSlot = NextSlot; nextSlot != std::numeric_limits<uint32_t>::max(); nextSlot = Slots[NextSlot])
+        for (uint32_t nextSlot = NextSlot; nextSlot != INVALID_SLOT; nextSlot = Slots[NextSlot])
         {
             ++freeSlotCount;  // found an available slot
         }
@@ -601,17 +602,17 @@ namespace Sprout
 
         for (uint32_t i = 0; i < Size; ++i)
         {
-            slots[i] = (Slots[i] != std::numeric_limits<uint32_t>::max() ? Slots[i] : Size);
+            slots[i] = (Slots[i] != INVALID_SLOT ? Slots[i] : Size);
             slotCounts[i] = SlotCounts[i];
         }
 
         for (uint32_t i = Size; i < size; ++i)
         {
-            slots[i] = (i + 1 < size ? i + 1 : std::numeric_limits<uint32_t>::max());
+            slots[i] = (i + 1 < size ? i + 1 : INVALID_SLOT);
             slotCounts[i] = 0;
         }
 
-        NextSlot = (NextSlot != std::numeric_limits<uint32_t>::max() ? NextSlot : Size);
+        NextSlot = (NextSlot != INVALID_SLOT ? NextSlot : Size);
         delete[] SlotCounts;
         delete[] Slots;
         SlotCounts = slotCounts;

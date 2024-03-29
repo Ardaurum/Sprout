@@ -1,6 +1,8 @@
 #include "spch.h"
-#include "DX12Context.h"
+
 #include "DX12ContextInternal.h"
+#include "DX12Context.h"
+#include "Sprout/Core/Assert.h"
 #include "Sprout/Core/Window.h"
 #include "Sprout/Core/CLISystem.h"
 #include "Sprout/Core/Collections.h"
@@ -69,7 +71,7 @@ namespace Sprout
 
 		SPROUT_NON_COPYABLE(DescriptorHeapManager)
 
-		inline CBVSRVUAVDescriptorSlot AllocateCBVSRVUAVDescriptor(ID3D12Device& device) { return CBVSRVUAVDescriptorSlot(Allocate(device, CBVSRVUAVDescriptorHeap)); }
+			inline CBVSRVUAVDescriptorSlot AllocateCBVSRVUAVDescriptor(ID3D12Device& device) { return CBVSRVUAVDescriptorSlot(Allocate(device, CBVSRVUAVDescriptorHeap)); }
 		inline DSVDescriptorSlot AllocateDSVDescriptor(ID3D12Device& device) { return DSVDescriptorSlot(Allocate(device, DSVDescriptorHeap)); }
 		inline RTVDescriptorSlot AllocateRTVDescriptor(ID3D12Device& device) { return RTVDescriptorSlot(Allocate(device, RTVDescriptorHeap)); }
 		inline SamplerDescriptorSlot AllocateSamplerDescriptor(ID3D12Device& device) { return SamplerDescriptorSlot(Allocate(device, SamplerDescriptorHeap)); }
@@ -123,17 +125,20 @@ namespace Sprout
 		}
 	};
 
-	DX12Context* DX12Context::Instance;
-
-	DX12Context::DX12Context(Window* windowHandle)
-		: WindowHandle(windowHandle)
+	DX12ContextInternal::DX12ContextInternal(DX12Context* context)
 	{
-		SPROUT_CORE_ASSERT_MSG(!Instance, "DX11 Context already exists!");
-		Instance = this;
+		SPROUT_CORE_ASSERT_MSG(context != nullptr, "Empty context passed!");
+		context->Core = this;
 	}
 
-	void DX12Context::Init()
+	DX12ContextInternal::~DX12ContextInternal()
 	{
+	}
+
+	void DX12ContextInternal::Init(Window* windowHandle)
+	{
+		WindowHandle = windowHandle;
+
 		UINT createDeviceFlags = 0;
 		UINT dxgiFactoryFlags = 0;
 
@@ -189,7 +194,7 @@ namespace Sprout
 		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create command queue!");
 		CommandQueue->GetTimestampFrequency(&TimestampFrequency);
 		CommandQueue->SetName(L"Sprout_CommandQueue");
-		
+
 		Width = WindowHandle->GetWidth();
 		Height = WindowHandle->GetHeight();
 
@@ -277,7 +282,7 @@ namespace Sprout
 		OnResize();
 	}
 
-	void DX12Context::OnResize()
+	void DX12ContextInternal::OnResize()
 	{
 		SPROUT_CORE_ASSERT_MSG(Device && SwapChain, "Initialize context first!");
 
@@ -288,37 +293,37 @@ namespace Sprout
 		// Determine if the swap buffers and other resources need to be resized or not.
 		/*if (Width != width || Height != height)
 		{
-			Width = width;
-			Height = height;
+		Width = width;
+		Height = height;
 
-			// Flush all current GPU commands.
-			WaitForGPU();
+		// Flush all current GPU commands.
+		WaitForGPU();
 
-			// Release the resources holding references to the swap chain (requirement of
-			// IDXGISwapChain::ResizeBuffers) and reset the frame fence values to the
-			// current fence value.
-			for (UINT n = 0; n < FRAME_COUNT; n++)
-			{
-				RenderTargets[n].Reset();
-				FenceValues[n] = FenceValues[FrameIndex];
-			}
+		// Release the resources holding references to the swap chain (requirement of
+		// IDXGISwapChain::ResizeBuffers) and reset the frame fence values to the
+		// current fence value.
+		for (UINT n = 0; n < FRAME_COUNT; n++)
+		{
+		RenderTargets[n].Reset();
+		FenceValues[n] = FenceValues[FrameIndex];
+		}
 
-			// Resize the swap chain to the desired dimensions.
-			DXGI_SWAP_CHAIN_DESC desc = {};
-			m_swapChain->GetDesc(&desc);
-			ThrowIfFailed(m_swapChain->ResizeBuffers(FrameCount, width, height, desc.BufferDesc.Format, desc.Flags));
+		// Resize the swap chain to the desired dimensions.
+		DXGI_SWAP_CHAIN_DESC desc = {};
+		m_swapChain->GetDesc(&desc);
+		ThrowIfFailed(m_swapChain->ResizeBuffers(FrameCount, width, height, desc.BufferDesc.Format, desc.Flags));
 
-			BOOL fullscreenState;
-			ThrowIfFailed(m_swapChain->GetFullscreenState(&fullscreenState, nullptr));
-			m_windowedMode = !fullscreenState;
+		BOOL fullscreenState;
+		ThrowIfFailed(m_swapChain->GetFullscreenState(&fullscreenState, nullptr));
+		m_windowedMode = !fullscreenState;
 
-			// Reset the frame index to the current back buffer index.
-			m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
+		// Reset the frame index to the current back buffer index.
+		m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
 
-			// Update the width, height, and aspect ratio member variables.
-			UpdateForSizeChange(width, height);
+		// Update the width, height, and aspect ratio member variables.
+		UpdateForSizeChange(width, height);
 
-			LoadSizeDependentResources();
+		LoadSizeDependentResources();
 		}
 
 		m_windowVisible = !minimized;*/
@@ -373,7 +378,7 @@ namespace Sprout
 		Context->RSSetViewports(1, &viewport);*/
 	}
 
-	void DX12Context::WaitForGPU()
+	void DX12ContextInternal::WaitForGPU()
 	{
 		// Schedule a Signal command in the queue.
 		/*HRESULT result = CommandQueue->Signal(Fence.Get(), FenceValues[FrameIndex]);
@@ -387,7 +392,7 @@ namespace Sprout
 		FenceValues[FrameIndex]++;*/
 	}
 
-	void DX12Context::SwapBuffers()
+	void DX12ContextInternal::SwapBuffers()
 	{
 		/*SwapChain->Present(1, DXGI_PRESENT_ALLOW_TEARING);
 
@@ -399,9 +404,9 @@ namespace Sprout
 
 		if (Fence->GetCompletedValue() < FenceValues[FrameIndex])
 		{
-			result = Fence->SetEventOnCompletion(FenceValues[FrameIndex], FenceEvent);
-			SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to set swap completion event");
-			WaitForSingleObjectEx(FenceEvent, INFINITE, FALSE);
+		result = Fence->SetEventOnCompletion(FenceValues[FrameIndex], FenceEvent);
+		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to set swap completion event");
+		WaitForSingleObjectEx(FenceEvent, INFINITE, FALSE);
 		}
 
 		FenceValues[FrameIndex] = currentFenceValue + 1;*/
