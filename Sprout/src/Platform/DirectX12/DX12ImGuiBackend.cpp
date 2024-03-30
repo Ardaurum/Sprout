@@ -31,6 +31,7 @@ namespace Sprout
 
 	void DX12ImGuiBackend::RenderDrawData()
 	{
-		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData());
+		// TODO IMPORANT:
+		//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData());
 	}
 }

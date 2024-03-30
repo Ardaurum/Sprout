@@ -10,6 +10,7 @@ namespace Sprout
 {
 	class DX12Context;
 	class DescriptorHeapManager;
+	class Window;
 
 	SIMPLE_TYPE_WRAPPER(CBVSRVUAVDescriptorSlot, uint32_t)
 	SIMPLE_TYPE_WRAPPER(DSVDescriptorSlot, uint32_t)
@@ -19,11 +20,11 @@ namespace Sprout
 	class DX12ContextInternal
 	{
 	public:
-		DX12ContextInternal(DX12Context* context);
+		DX12ContextInternal(Window* windowHandle);
 		~DX12ContextInternal();
 		SPROUT_NON_COPYABLE(DX12ContextInternal)
 
-		void Init(Window* windowHandle);
+		void Init();
 		void SwapBuffers();
 		void WaitForGPU();
 
@@ -38,7 +39,6 @@ namespace Sprout
 		static constexpr UINT FRAME_COUNT = 2;
 
 	private:
-
 		Window* WindowHandle;
 
 		Microsoft::WRL::ComPtr<ID3D12Device> Device = nullptr;
@@ -77,5 +77,7 @@ namespace Sprout
 #ifdef SPROUT_DEBUG
 		bool DebugShaders = true;
 #endif
+
+		friend class DX12Context;
 	};
 }

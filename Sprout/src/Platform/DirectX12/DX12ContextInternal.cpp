@@ -1,7 +1,6 @@
 #include "spch.h"
 
 #include "DX12ContextInternal.h"
-#include "DX12Context.h"
 #include "Sprout/Core/Assert.h"
 #include "Sprout/Core/Window.h"
 #include "Sprout/Core/CLISystem.h"
@@ -125,20 +124,17 @@ namespace Sprout
 		}
 	};
 
-	DX12ContextInternal::DX12ContextInternal(DX12Context* context)
+	DX12ContextInternal::DX12ContextInternal(Window* windowHandle) : WindowHandle(windowHandle)
 	{
-		SPROUT_CORE_ASSERT_MSG(context != nullptr, "Empty context passed!");
-		context->Core = this;
+
 	}
 
 	DX12ContextInternal::~DX12ContextInternal()
 	{
 	}
 
-	void DX12ContextInternal::Init(Window* windowHandle)
+	void DX12ContextInternal::Init()
 	{
-		WindowHandle = windowHandle;
-
 		UINT createDeviceFlags = 0;
 		UINT dxgiFactoryFlags = 0;
 
