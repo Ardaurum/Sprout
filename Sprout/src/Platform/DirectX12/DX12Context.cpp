@@ -8,7 +8,7 @@ namespace Sprout
 
 	DX12Context::DX12Context(Window* windowHandle)
 	{
-		SPROUT_CORE_ASSERT_MSG(!Instance, "DX11 Context already exists!");
+		SPROUT_CORE_ASSERT_MSG(!Instance, "DX12 Context already exists!");
 		Core = new DX12ContextInternal(windowHandle);
 		Instance = this;
 	}

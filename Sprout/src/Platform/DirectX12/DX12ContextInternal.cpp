@@ -70,7 +70,7 @@ namespace Sprout
 
 		SPROUT_NON_COPYABLE(DescriptorHeapManager)
 
-			inline CBVSRVUAVDescriptorSlot AllocateCBVSRVUAVDescriptor(ID3D12Device& device) { return CBVSRVUAVDescriptorSlot(Allocate(device, CBVSRVUAVDescriptorHeap)); }
+		inline CBVSRVUAVDescriptorSlot AllocateCBVSRVUAVDescriptor(ID3D12Device& device) { return CBVSRVUAVDescriptorSlot(Allocate(device, CBVSRVUAVDescriptorHeap)); }
 		inline DSVDescriptorSlot AllocateDSVDescriptor(ID3D12Device& device) { return DSVDescriptorSlot(Allocate(device, DSVDescriptorHeap)); }
 		inline RTVDescriptorSlot AllocateRTVDescriptor(ID3D12Device& device) { return RTVDescriptorSlot(Allocate(device, RTVDescriptorHeap)); }
 		inline SamplerDescriptorSlot AllocateSamplerDescriptor(ID3D12Device& device) { return SamplerDescriptorSlot(Allocate(device, SamplerDescriptorHeap)); }
@@ -282,129 +282,74 @@ namespace Sprout
 	{
 		SPROUT_CORE_ASSERT_MSG(Device && SwapChain, "Initialize context first!");
 
+		HRESULT result;
 		uint32_t width, height;
 		width = WindowHandle->GetWidth();
 		height = WindowHandle->GetHeight();
 
 		// Determine if the swap buffers and other resources need to be resized or not.
-		/*if (Width != width || Height != height)
+		if (Width != width || Height != height)
 		{
-		Width = width;
-		Height = height;
+			Width = width;
+			Height = height;
 
-		// Flush all current GPU commands.
-		WaitForGPU();
+			// Flush all current GPU commands.
+			WaitForGPU();
 
-		// Release the resources holding references to the swap chain (requirement of
-		// IDXGISwapChain::ResizeBuffers) and reset the frame fence values to the
-		// current fence value.
-		for (UINT n = 0; n < FRAME_COUNT; n++)
-		{
-		RenderTargets[n].Reset();
-		FenceValues[n] = FenceValues[FrameIndex];
+			// Release the resources holding references to the swap chain (requirement of
+			// IDXGISwapChain::ResizeBuffers) and reset the frame fence values to the
+			// current fence value.
+			for (UINT n = 0; n < FRAME_COUNT; n++)
+			{
+				BackBuffers[n].Reset();
+				FenceValues[n] = FenceValues[FrameIndex];
+			}
+
+			// Resize the swap chain to the desired dimensions.
+			DXGI_SWAP_CHAIN_DESC desc = {};
+			SwapChain->GetDesc(&desc);
+			result = SwapChain->ResizeBuffers(FRAME_COUNT, width, height, desc.BufferDesc.Format, desc.Flags);
+			SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Couldn't resize the swapchain buffer!");
+
+			BOOL fullscreenState;
+			result = SwapChain->GetFullscreenState(&fullscreenState, nullptr);
+
+			// Reset the frame index to the current back buffer index.
+			FrameIndex = SwapChain->GetCurrentBackBufferIndex();
 		}
-
-		// Resize the swap chain to the desired dimensions.
-		DXGI_SWAP_CHAIN_DESC desc = {};
-		m_swapChain->GetDesc(&desc);
-		ThrowIfFailed(m_swapChain->ResizeBuffers(FrameCount, width, height, desc.BufferDesc.Format, desc.Flags));
-
-		BOOL fullscreenState;
-		ThrowIfFailed(m_swapChain->GetFullscreenState(&fullscreenState, nullptr));
-		m_windowedMode = !fullscreenState;
-
-		// Reset the frame index to the current back buffer index.
-		m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
-
-		// Update the width, height, and aspect ratio member variables.
-		UpdateForSizeChange(width, height);
-
-		LoadSizeDependentResources();
-		}
-
-		m_windowVisible = !minimized;*/
-
-		/*SPROUT_CORE_ASSERT_MSG(Device && Context && SwapChain, "Initialize context first!");
-
-		int width, height;
-		width = WindowHandle->GetWidth();
-		height = WindowHandle->GetHeight();
-
-		HRESULT result = SwapChain->ResizeBuffers(2, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
-		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to resize swap chain buffers!");
-
-		Microsoft::WRL::ComPtr<ID3D12Texture2D> backBuffer = 0;
-		result = SwapChain->GetBuffer(0, __uuidof(ID3D12Texture2D), (void**) &backBuffer);
-		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to get buffer from swap chain!");
-
-		result = Device->CreateRenderTargetView(backBuffer.Get(), 0, &RenderTarget);
-		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create Render Target View!");
-
-		D3D12_TEXTURE2D_DESC depthStencilDesc;
-
-		depthStencilDesc.Width = width;
-		depthStencilDesc.Height = height;
-		depthStencilDesc.MipLevels = 1;
-		depthStencilDesc.ArraySize = 1;
-		depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		depthStencilDesc.SampleDesc.Count = 1;
-		depthStencilDesc.SampleDesc.Quality = 0;
-
-		depthStencilDesc.Usage = D3D12_USAGE_DEFAULT;
-		depthStencilDesc.BindFlags = D3D12_BIND_DEPTH_STENCIL;
-		depthStencilDesc.CPUAccessFlags = 0;
-		depthStencilDesc.MiscFlags = 0;
-
-		result = Device->CreateTexture2D(&depthStencilDesc, 0, &DepthStencil);
-		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create depth stencil texture!");
-
-		result = Device->CreateDepthStencilView(DepthStencil.Get(), 0, &DepthStencilView);
-		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create depth stencil view!");
-
-		Context->OMSetRenderTargets(1, RenderTarget.GetAddressOf(), nullptr);
-
-		D3D12_VIEWPORT viewport;
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
-		viewport.Width = static_cast<float>(width);
-		viewport.Height = static_cast<float>(height);
-		viewport.MinDepth = .0f;
-		viewport.MaxDepth = 1.0f;
-
-		Context->RSSetViewports(1, &viewport);*/
 	}
 
 	void DX12ContextInternal::WaitForGPU()
 	{
 		// Schedule a Signal command in the queue.
-		/*HRESULT result = CommandQueue->Signal(Fence.Get(), FenceValues[FrameIndex]);
+		HRESULT result = CommandQueue->Signal(Fence[FrameIndex].Get(), FenceValues[FrameIndex]);
 		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to set fence!");
 
 		// Wait until the fence has been processed.
-		Fence->SetEventOnCompletion(FenceValues[FrameIndex], FenceEvent);
+		Fence[FrameIndex]->SetEventOnCompletion(FenceValues[FrameIndex], FenceEvent);
 		WaitForSingleObjectEx(FenceEvent, INFINITE, FALSE);
 
 		// Increment the fence value for the current frame.
-		FenceValues[FrameIndex]++;*/
+		FenceValues[FrameIndex]++;
 	}
 
 	void DX12ContextInternal::SwapBuffers()
 	{
-		/*SwapChain->Present(1, DXGI_PRESENT_ALLOW_TEARING);
+		SwapChain->Present(1, DXGI_PRESENT_ALLOW_TEARING);
 
 		const UINT64 currentFenceValue = FenceValues[FrameIndex];
-		HRESULT result = CommandQueue->Signal(Fence.Get(), currentFenceValue);
+		HRESULT result = CommandQueue->Signal(Fence[FrameIndex].Get(), currentFenceValue);
 		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to set fence!");
 
 		FrameIndex = SwapChain->GetCurrentBackBufferIndex();
 
-		if (Fence->GetCompletedValue() < FenceValues[FrameIndex])
+		if (Fence[FrameIndex]->GetCompletedValue() < FenceValues[FrameIndex])
 		{
-		result = Fence->SetEventOnCompletion(FenceValues[FrameIndex], FenceEvent);
-		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to set swap completion event");
-		WaitForSingleObjectEx(FenceEvent, INFINITE, FALSE);
+			result = Fence[FrameIndex]->SetEventOnCompletion(FenceValues[FrameIndex], FenceEvent);
+			SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to set swap completion event");
+			WaitForSingleObjectEx(FenceEvent, INFINITE, FALSE);
 		}
 
-		FenceValues[FrameIndex] = currentFenceValue + 1;*/
+		FenceValues[FrameIndex] = currentFenceValue + 1;
 	}
 }

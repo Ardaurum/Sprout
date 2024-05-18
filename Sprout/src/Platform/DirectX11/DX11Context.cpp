@@ -74,7 +74,7 @@ namespace Sprout
 		result = dxgiFactory->CreateSwapChain(Device.Get(), &swapChainDesc, &SwapChain);
 		SPROUT_CORE_ASSERT_MSG(SUCCEEDED(result), "Failed to create SwapChain!");
 
-		SPROUT_CORE_INFO("DirectX Info:");
+		SPROUT_CORE_INFO("DirectX 11 Info:");
 		SPROUT_CORE_INFO("Vendor: {0}", dxgiAdapterDesc.VendorId);
 		SPROUT_CORE_INFO("Version: {0}", featureLevel);
 		char description[128];
