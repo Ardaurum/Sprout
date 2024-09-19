@@ -10,9 +10,9 @@ namespace Sprout
 {
 	void DefineCLIArgs()
 	{
-		SCLI_DEFINE_ARG("width", CLISystem::Type::Number, 'w', "Window width");
-		SCLI_DEFINE_ARG("height", CLISystem::Type::Number, 'h', "Window height");
-		SCLI_DEFINE_ARG("use_warp", CLISystem::Type::Boolean, 0, "Use Windows Advanced Rasterization Platform");
+		SCLI_DEFINE_ARG("width", CLISystem::Type::Number, 'w', (void*) 1920, "Window width");
+		SCLI_DEFINE_ARG("height", CLISystem::Type::Number, 'h', (void*) 1080, "Window height");
+		SCLI_DEFINE_ARG("use_warp", CLISystem::Type::Boolean, 0, (void*) false, "Use Windows Advanced Rasterization Platform");
 	}
 
 	App* App::Instance = nullptr;
@@ -22,7 +22,7 @@ namespace Sprout
 		SPROUT_CORE_ASSERT_MSG(!Instance, "App already exists!");
 		Instance = this;
 
-		Renderer::PrepareAPI(RendererAPI::API::Direct3D11);
+		Renderer::PrepareAPI(RendererAPI::API::Direct3D12);
 
 		CLISystem const& cliSystem = CLISystem::Get();
 		uint32_t winWidth = 1920;

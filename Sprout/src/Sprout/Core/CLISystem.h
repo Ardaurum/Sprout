@@ -7,9 +7,9 @@
 #include <variant>
 
 #if SPROUT_DEBUG
-#define SCLI_DEFINE_ARG(name, type, symbol, description) CLISystem::Get().Define(Identifier32(name), type, symbol, name, description);
+#define SCLI_DEFINE_ARG(name, type, symbol, defaultValue, description) CLISystem::Get().Define(Identifier32(name), type, symbol, defaultValue, name, description);
 #else
-#define SCLI_DEFINE_ARG(name, type, symbol, description) CLISystem::Get().Define(Identifier32(name), type, symbol);
+#define SCLI_DEFINE_ARG(name, type, symbol, defaultValue, description) CLISystem::Get().Define(Identifier32(name), type, symbol, defaultValue);
 #endif
 
 #define SCLI_ID(name) Identifier32(#name)
@@ -32,7 +32,7 @@ namespace Sprout
         CLISystem(CLISystem const&&) = delete;
 
         void ParseArgs(int const argc, char const* const* argv);
-        void Define(ID32 const identifier, Type const optionType, char const symbol = 0, char const* debugName = "", char const* description = "");
+        void Define(ID32 const identifier, Type const optionType, char const symbol = 0, void* defaultValue = nullptr, char const* debugName = "", char const* description = "");
         bool HasValue(ID32 const arg) const;
         bool IsTrue(ID32 const arg) const;
         double GetNumber(ID32 const arg) const;
@@ -42,6 +42,7 @@ namespace Sprout
         static inline CLISystem& Get() { return Instance; }
 
     private:
+
         static CLISystem Instance;
 
         CLISystem();
@@ -64,6 +65,7 @@ namespace Sprout
             std::string Description;
         };
 
+        // TODO IMPORTANT: Replace with something better than this slow unordered map :(
         std::unordered_map<char, ID32> SymbolMap;
         std::unordered_map<ID32, CLIDefinition> Definitions;
 

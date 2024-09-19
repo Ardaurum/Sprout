@@ -85,7 +85,8 @@ namespace Sprout
         }
     }
 
-    void CLISystem::Define(ID32 const identifier, Type const optionType, char const symbol, char const* debugName, char const* description)
+    // TODO: Change to template
+    void CLISystem::Define(ID32 const identifier, Type const optionType, char const symbol, void* defaultValue, char const* debugName, char const* description)
     {
         SPROUT_CORE_ASSERT_MSG(Definitions.find(identifier) == Definitions.end() && (symbol == 0 || SymbolMap.find(symbol) == SymbolMap.end()), "Identifier or symbol is already defined. Identifier: {0}, Symbol: {1}", identifier, symbol);
         SPROUT_CORE_ASSERT_MSG(identifier != Identifier32("help"), "Command Line Argument name cannot be '--help'. Please redefine it.");
@@ -105,6 +106,38 @@ namespace Sprout
             SymbolMap.emplace(symbol, identifier);
         }
         Definitions.emplace(identifier, CLIDefinition(optionType, symbol, debugName, description));
+
+        if (!defaultValue)
+        {
+            defaultValue = 0;
+        }
+
+        switch (optionType)
+        {
+        case Type::Boolean:
+        {
+            bool* value = static_cast<bool*>(defaultValue);
+            Values[identifier] = *value ? 1 : 0;
+            break;
+        }
+        case Type::Number:
+        {
+            double* value = static_cast<double*>(defaultValue);
+            Values[identifier] = *value;
+            break;
+        }
+        case Type::String:
+        {
+            char const* value = static_cast<char const*>(defaultValue);
+            Values[identifier] = std::string(value);
+            break;
+        }
+        default:
+        {
+            SPROUT_CORE_ERROR("Not supported CLI type: {0}", TypeToString(optionType));
+            break;
+        }
+        }
     }
 
     bool CLISystem::HasValue(ID32 const arg) const
